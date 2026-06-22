@@ -55,12 +55,8 @@ export const action = async ({ request }) => {
   let cardOrder = JSON.parse(settings.cardOrder || '["design_1"]');
 
   if (actionType === "enable") {
-    if (!activeCards.includes(cardId)) {
-      activeCards.push(cardId);
-    }
-    if (!cardOrder.includes(cardId)) {
-      cardOrder.push(cardId);
-    }
+    activeCards = [cardId];
+    cardOrder = [cardId];
   } else if (actionType === "disable") {
     activeCards = activeCards.filter(id => id !== cardId);
     if (activeCards.length === 0) {
@@ -144,7 +140,7 @@ export default function Index() {
             </div>
           </div>
           <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" strokeWidth="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+            <svg onClick={() => window.shopify && window.shopify.toast.show('No new notifications')} style={{ cursor: "pointer" }} width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" strokeWidth="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
             <div style={{ width: "32px", height: "32px", borderRadius: "50%", background: "#38bdf8", border: "2px solid #1e293b", display: "flex", justifyContent: "center", alignItems: "center", fontSize: "14px", fontWeight: "bold" }}>{shop.charAt(0).toUpperCase()}</div>
           </div>
         </div>
