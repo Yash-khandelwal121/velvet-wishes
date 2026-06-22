@@ -1,7 +1,7 @@
 import { redirect, Form, useLoaderData } from "react-router";
 import { login } from "../../shopify.server";
 import { useState } from "react";
-import loginStyles from "../styles/login.css?url";
+import loginStyles from "../../styles/login.css?url";
 
 export const links = () => [{ rel: "stylesheet", href: loginStyles }];
 
