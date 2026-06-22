@@ -2,7 +2,7 @@
 
 client_id = "15343f0d13136c709c7d9346bd08a422"
 name = "velvet wishes"
-application_url = "https://example.com"
+application_url = "https://velvet-wishes.vercel.app"
 embedded = true
 
 [build]
@@ -25,10 +25,14 @@ api_version = "2026-07"
 scopes = "write_products,write_metaobjects,write_metaobject_definitions"
 
 [auth]
-redirect_urls = [ "https://example.com/api/auth" ]
+redirect_urls = [
+  "https://velvet-wishes.vercel.app/auth/callback",
+  "https://velvet-wishes.vercel.app/auth/shopify/callback",
+  "https://velvet-wishes.vercel.app/api/auth/callback"
+]
 
 [app_proxy]
-url = "https://example.com/api/proxy"
+url = "https://velvet-wishes.vercel.app/api/proxy"
 subpath = "giftnote"
 prefix = "apps"
 
