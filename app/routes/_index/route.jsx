@@ -8,7 +8,11 @@ export const links = () => [{ rel: "stylesheet", href: loginStyles }];
 export const loader = async ({ request }) => {
   const url = new URL(request.url);
 
-  if (url.searchParams.get("shop")) {
+  if (
+    url.searchParams.get("shop") ||
+    url.searchParams.get("embedded") === "1" ||
+    url.searchParams.get("id_token")
+  ) {
     throw redirect(`/app?${url.searchParams.toString()}`);
   }
 
