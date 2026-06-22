@@ -2,14 +2,21 @@ document.addEventListener("DOMContentLoaded", function() {
   const settings = window.GiftNoteSettings || {};
   const container = document.getElementById("giftnote-pro-container");
   
-  if (!container || !settings.activeCards || settings.activeCards.length === 0) return;
+  if (!container) return;
 
   const fontColor = settings.fontColor || "#000000";
   const textColor = settings.textColor || "#333333";
   const buttonColor = settings.buttonColor || "#000000";
   const accentColor = settings.accentColor || "#f4f4f4";
   const titleText = settings.cardTitle || "Add a Gift Message";
-  const activeCards = settings.activeCards || ["design_1"];
+  let activeCards = ["design_1"];
+  try {
+    activeCards = typeof settings.activeCards === 'string'
+      ? JSON.parse(settings.activeCards)
+      : (settings.activeCards || ["design_1"]);
+  } catch (e) {
+    console.error("Failed to parse activeCards", e);
+  }
 
   let html = `
     <div class="gnp-main-container" style="--gnp-font-color: ${fontColor}; --gnp-text-color: ${textColor}; --gnp-btn-color: ${buttonColor}; --gnp-accent-color: ${accentColor};">
