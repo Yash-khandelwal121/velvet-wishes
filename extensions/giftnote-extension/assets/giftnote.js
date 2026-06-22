@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", function() {
+function initGiftNote() {
   const settings = window.GiftNoteSettings || {};
   const container = document.getElementById("giftnote-pro-container");
   
@@ -63,7 +63,17 @@ document.addEventListener("DOMContentLoaded", function() {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ shop: Shopify.shop, action: 'view' })
   }).catch(e => console.error(e));
-});
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener("DOMContentLoaded", initGiftNote);
+} else {
+  initGiftNote();
+}
+
+document.addEventListener('shopify:section:load', initGiftNote);
+document.addEventListener('shopify:block:select', initGiftNote);
+document.addEventListener('shopify:block:deselect', initGiftNote);
 
 let selectedDesignId = null;
 
