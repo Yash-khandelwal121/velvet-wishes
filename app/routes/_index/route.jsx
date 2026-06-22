@@ -7,13 +7,16 @@ export const links = () => [{ rel: "stylesheet", href: loginStyles }];
 
 export const loader = async ({ request }) => {
   const url = new URL(request.url);
+  const authHeader = request.headers.get("Authorization");
 
   if (
     url.searchParams.get("shop") ||
     url.searchParams.get("embedded") === "1" ||
-    url.searchParams.get("id_token")
+    url.searchParams.get("id_token") ||
+    (authHeader && authHeader.startsWith("Bearer "))
   ) {
-    throw redirect(`/app?${url.searchParams.toString()}`);
+    const search = url.searchParams.toString();
+    throw redirect(search ? `/app?${search}` : `/app`);
   }
 
   return { showForm: Boolean(login) };
