@@ -1,0 +1,160 @@
+.gnp-main-container {
+  font-family: inherit;
+  margin: 20px 0;
+  padding: 20px;
+  background: var(--gnp-accent-color);
+  border-radius: 12px;
+}
+
+.gnp-title {
+  color: var(--gnp-font-color);
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+  font-weight: 600;
+}
+
+.gnp-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.gnp-card {
+  border: 2px solid transparent;
+  border-radius: 8px;
+  padding: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.gnp-card.gnp-selected {
+  border-color: var(--gnp-btn-color);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+}
+
+.gnp-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.gnp-design-name {
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.gnp-radio {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 2px solid #ccc;
+  display: inline-block;
+}
+
+.gnp-card.gnp-selected .gnp-radio {
+  border-color: var(--gnp-btn-color);
+  background: var(--gnp-btn-color);
+  box-shadow: inset 0 0 0 3px #fff;
+}
+
+.gnp-message-input {
+  width: 100%;
+  height: 80px;
+  padding: 8px;
+  border: 1px solid rgba(0,0,0,0.1);
+  border-radius: 4px;
+  resize: none;
+  font-family: inherit;
+  font-size: 13px;
+  background: rgba(255,255,255,0.9);
+  color: var(--gnp-text-color);
+}
+
+.gnp-save-btn {
+  background: var(--gnp-btn-color);
+  color: #fff;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 16px;
+  width: 100%;
+  transition: opacity 0.2s;
+}
+
+.gnp-save-btn:hover {
+  opacity: 0.9;
+}
+
+/* DESIGN 1: Simple */
+.gnp-design-simple {
+  background: #ffffff;
+  border-color: #eaeaea;
+  color: #333;
+}
+
+/* DESIGN 2: Modern Luxury */
+.gnp-design-modern {
+  background: #111111;
+  color: #d4af37; /* Gold */
+}
+.gnp-design-modern .gnp-message-input {
+  background: #222;
+  color: #fff;
+  border-color: #d4af37;
+}
+
+/* DESIGN 3: Floral Premium */
+.gnp-design-floral {
+  background: #fffafa;
+  border-color: #ffb6c1;
+  color: #8b0000;
+  background-image: radial-gradient(#ffb6c1 1px, transparent 1px);
+  background-size: 10px 10px;
+}
+
+/* DESIGN 4: Interactive Animated */
+.gnp-design-animated {
+  background: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%);
+  color: #fff;
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.gnp-design-animated:hover {
+  transform: scale(1.05);
+}
+
+/* DESIGN 5: Festival */
+.gnp-design-festival {
+  background: #ffebcd;
+  color: #ff4500;
+  border: 2px dashed #ff4500;
+}
+
+/* DESIGN 6: Ultra Luxury Glassmorphism */
+.gnp-design-ultra {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  color: #333;
+}
+
+/* DESIGN 7: 3D Experience */
+.gnp-design-3d {
+  background: #1a1a2e;
+  color: #e94560;
+  box-shadow: 
+    inset 2px 2px 5px rgba(255,255,255,0.1),
+    inset -3px -3px 7px rgba(0,0,0,0.5),
+    5px 5px 15px rgba(0,0,0,0.3);
+  transform-style: preserve-3d;
+}
+.gnp-design-3d:hover {
+  transform: translateY(-5px) rotateX(5deg) rotateY(-5deg);
+}

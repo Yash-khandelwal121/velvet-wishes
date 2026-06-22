@@ -1,0 +1,17 @@
+{% schema %}
+{
+  "name": "Gift Note Options",
+  "target": "section",
+  "stylesheet": "giftnote.css",
+  "javascript": "giftnote.js",
+  "settings": []
+}
+{% endschema %}
+
+<script>
+  window.GiftNoteSettings = {{ app.metafields.giftnote.settings.value | default: 'null' }};
+</script>
+
+<div id="giftnote-pro-container" class="giftnote-pro-wrapper">
+  <!-- React or Vanilla JS will render the 7 designs here -->
+</div>

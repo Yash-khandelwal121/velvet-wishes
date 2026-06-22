@@ -1,0 +1,7 @@
+api_version = "2024-01"
+
+[[extensions]]
+name = "GiftNote Pro"
+handle = "giftnote-extension"
+uid = "9ed7701a-1588-2dbb-2d64-92ed71c457a4799e52f3"
+type = "theme"
