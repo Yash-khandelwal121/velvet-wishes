@@ -82,7 +82,11 @@ export default function Settings() {
 
   const handleToggleCard = (cardId) => {
     setFormState(prev => {
-      return { ...prev, activeCards: [cardId], cardOrder: [cardId] };
+      const isActive = prev.activeCards.includes(cardId);
+      let newActive = isActive ? prev.activeCards.filter(id => id !== cardId) : [...prev.activeCards, cardId];
+      let newOrder = prev.cardOrder;
+      if (!isActive && !newOrder.includes(cardId)) newOrder = [...newOrder, cardId];
+      return { ...prev, activeCards: newActive, cardOrder: newOrder };
     });
   };
 
@@ -181,8 +185,8 @@ export default function Settings() {
                   </div>
                   {unlocked ? (
                     <label style={{ display: "flex", alignItems: "center", cursor: "pointer", fontSize: "13px", color: active ? "#38bdf8" : "#94a3b8" }}>
-                      <input type="radio" checked={active} onChange={() => handleToggleCard(design.id)} style={{ marginRight: "8px", accentColor: "#38bdf8" }} />
-                      {active ? "Active" : "Set Active"}
+                      <input type="checkbox" checked={active} onChange={() => handleToggleCard(design.id)} style={{ marginRight: "8px", accentColor: "#38bdf8" }} />
+                      {active ? "Enabled" : "Disabled"}
                     </label>
                   ) : (
                     <Link to="/app/pricing" style={{ fontSize: "12px", color: "#f97316", background: "transparent", border: "none", cursor: "pointer", textDecoration: "underline", display: "inline-block" }}>Upgrade to unlock</Link>

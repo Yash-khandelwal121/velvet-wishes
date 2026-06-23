@@ -407,6 +407,11 @@
   cursor: pointer;
   perspective: 1000px !important;
   transform-style: preserve-3d !important;
+  transition: transform 0.3s ease;
+}
+
+.gnp-interactive-wrapper:hover {
+  transform: scale(1.02);
 }
 
 .gnp-interactive-hint {

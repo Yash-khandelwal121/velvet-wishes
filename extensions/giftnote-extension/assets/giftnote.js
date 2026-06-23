@@ -29,7 +29,7 @@ function initGiftNote() {
     ];
 
     const maxCards = parseInt(settings.maxCards || 7, 10);
-    const availableDesigns = designs.filter(d => activeCards.includes(d.id)).slice(0, maxCards);
+    const availableDesigns = designs.filter(d => activeCards.includes(d.id));
     if (availableDesigns.length === 0) availableDesigns.push(designs[0]);
 
     // Default to the first available premium animated design if possible

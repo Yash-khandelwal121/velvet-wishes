@@ -52,8 +52,12 @@ export const action = async ({ request }) => {
   let cardOrder = JSON.parse(settings.cardOrder || '["design_1"]');
 
   if (actionType === "enable") {
-    activeCards = [cardId];
-    cardOrder = [cardId];
+    if (!activeCards.includes(cardId)) {
+      activeCards.push(cardId);
+    }
+    if (!cardOrder.includes(cardId)) {
+      cardOrder.push(cardId);
+    }
   } else if (actionType === "disable") {
     activeCards = activeCards.filter(id => id !== cardId);
     if (activeCards.length === 0) {
