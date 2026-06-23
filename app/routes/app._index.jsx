@@ -1,4 +1,4 @@
-import { useLoaderData, useNavigate, useSubmit, Link } from "react-router";
+import { useLoaderData, useNavigate, useSubmit, Link, useNavigation } from "react-router";
 import { boundary } from "@shopify/shopify-app-react-router/server";
 import { authenticate } from "../shopify.server";
 import prisma from "../db.server";
@@ -60,8 +60,12 @@ export const action = async ({ request }) => {
   let cardOrder = JSON.parse(settings.cardOrder || '["design_1"]');
 
   if (actionType === "enable") {
-    activeCards = [cardId];
-    cardOrder = [cardId];
+    if (!activeCards.includes(cardId)) {
+      activeCards.push(cardId);
+    }
+    if (!cardOrder.includes(cardId)) {
+      cardOrder.push(cardId);
+    }
   } else if (actionType === "disable") {
     activeCards = activeCards.filter(id => id !== cardId);
     if (activeCards.length === 0) {
@@ -91,19 +95,21 @@ export const action = async ({ request }) => {
 };
 
 const ALL_DESIGNS = [
-  { id: "design_1", name: "Simple & Clean", tier: "FREE", description: "Minimalist, elegant design.", color: "#ffffff", textColor: "#111827", borderColor: "#e5e7eb" },
-  { id: "design_2", name: "Modern Luxury", tier: "PREMIUM_A", description: "Sleek dark theme with gold accents.", color: "#111827", textColor: "#d4af37", borderColor: "#374151" },
-  { id: "design_3", name: "Floral Premium", tier: "PREMIUM_A", description: "Beautiful floral patterns for special occasions.", color: "#fdf2f8", textColor: "#be185d", borderColor: "#fbcfe8" },
-  { id: "design_4", name: "Interactive Animated", tier: "PREMIUM_B", description: "Hover effects and dynamic reveals.", color: "linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%)", textColor: "#ffffff", borderColor: "transparent" },
-  { id: "design_5", name: "Festival & Celebration", tier: "PREMIUM_B", description: "Vibrant colors for holidays.", color: "#fffbeb", textColor: "#ea580c", borderColor: "#fde68a" },
-  { id: "design_6", name: "Ultra Premium Luxury", tier: "PREMIUM_C", description: "Glassmorphism, deep shadows, and elegance.", color: "rgba(255,255,255,0.2)", textColor: "#111827", borderColor: "rgba(255,255,255,0.5)" },
-  { id: "design_7", name: "3D Premium Experience", tier: "PREMIUM_C", description: "3D perspective tilt and rich textures.", color: "#1e1b4b", textColor: "#c7d2fe", borderColor: "#312e81" },
+  { id: "design_1", name: "Classic Note", tier: "FREE", description: "Simple, elegant and perfect for any occasion.", color: "#fdfbf7", textColor: "#2c3e50", borderColor: "#e0d8c3" },
+  { id: "design_2", name: "Floral Wishes", tier: "PREMIUM_A", description: "Beautiful floral design for heartfelt moments.", color: "#ffebf0", textColor: "#8b0000", borderColor: "#ffb6c1" },
+  { id: "design_3", name: "Luxury Black Gold", tier: "PREMIUM_A", description: "Premium black & gold style for a luxury touch.", color: "#111111", textColor: "#d4af37", borderColor: "#333333" },
+  { id: "design_4", name: "Celebration Card", tier: "PREMIUM_B", description: "Bright, joyful and perfect for celebrations.", color: "#fffdeb", textColor: "#e63946", borderColor: "#f4a261" },
+  { id: "design_5", name: "Romantic Elegance", tier: "PREMIUM_B", description: "Elegant design for your loved ones.", color: "#ffe6ea", textColor: "#b00020", borderColor: "#ffc0cb" },
+  { id: "design_6", name: "Royal Luxury", tier: "PREMIUM_C", description: "Royal, elegant and truly premium experience.", color: "#0b132b", textColor: "#f3b755", borderColor: "#1c2541" },
+  { id: "design_7", name: "3D Magic Gift", tier: "PREMIUM_C", description: "3D animated gift box with magical vibes.", color: "#1a0b2e", textColor: "#d8b4e2", borderColor: "#312e81" },
 ];
 
 export default function Index() {
   const { analytics, subscription, shop, activeCards } = useLoaderData();
   const navigate = useNavigate();
   const submit = useSubmit();
+  const navigation = useNavigation();
+  const isUpdating = navigation.state !== "idle";
 
   const isCardUnlocked = (tier) => {
     const plan = (subscription?.plan || "FREE").toUpperCase();
@@ -223,6 +229,7 @@ export default function Index() {
                       active ? (
                         <button 
                           onClick={() => handleToggleActive(design.id, "disable")}
+                          disabled={isUpdating}
                           style={{ 
                             padding: "6px 12px", 
                             fontSize: "12px", 
@@ -230,15 +237,17 @@ export default function Index() {
                             color: "#38bdf8", 
                             border: "1px solid #38bdf8", 
                             borderRadius: "12px", 
-                            cursor: "pointer",
-                            fontWeight: "600"
+                            cursor: isUpdating ? "wait" : "pointer",
+                            fontWeight: "600",
+                            opacity: isUpdating ? 0.7 : 1
                           }}
                         >
-                          ✓ Active
+                          {isUpdating ? "..." : "✓ Active"}
                         </button>
                       ) : (
                         <button 
                           onClick={() => handleToggleActive(design.id, "enable")}
+                          disabled={isUpdating}
                           style={{ 
                             padding: "6px 12px", 
                             fontSize: "12px", 
@@ -246,11 +255,12 @@ export default function Index() {
                             color: "#0f172a", 
                             border: "none", 
                             borderRadius: "12px", 
-                            cursor: "pointer",
-                            fontWeight: "600"
+                            cursor: isUpdating ? "wait" : "pointer",
+                            fontWeight: "600",
+                            opacity: isUpdating ? 0.7 : 1
                           }}
                         >
-                          Apply
+                          {isUpdating ? "..." : "Apply"}
                         </button>
                       )
                     )}
