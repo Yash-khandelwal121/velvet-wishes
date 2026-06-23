@@ -1,10 +1,15 @@
-import { useLoaderData, useNavigate, useSubmit } from "react-router";
+import { useLoaderData, useNavigate, useSubmit, Link } from "react-router";
 import { boundary } from "@shopify/shopify-app-react-router/server";
 import { authenticate } from "../shopify.server";
 import prisma from "../db.server";
 import { useState } from "react";
 import { syncSubscription } from "../utils/billing.server";
 import { updateStoreMetafield } from "../utils/metafields.server";
+import previewStyles from "../styles/giftnote-preview.css?url";
+
+export const links = () => [
+  { rel: "stylesheet", href: previewStyles },
+];
 
 export const loader = async ({ request }) => {
   const { session } = await authenticate.admin(request);
@@ -99,8 +104,6 @@ export default function Index() {
   const { analytics, subscription, shop, activeCards } = useLoaderData();
   const navigate = useNavigate();
   const submit = useSubmit();
-  const [previewDesign, setPreviewDesign] = useState(null);
-  const [device, setDevice] = useState("desktop");
 
   const isCardUnlocked = (tier) => {
     const plan = (subscription?.plan || "FREE").toUpperCase();
@@ -136,7 +139,7 @@ export default function Index() {
           <div style={{ display: "flex", alignItems: "center", gap: "32px" }}>
             <div style={{ display: "flex", gap: "24px", fontSize: "13px", fontWeight: "500", color: "#94a3b8" }}>
               <span style={{ color: "#f97316", borderBottom: "2px solid #f97316", paddingBottom: "21px", marginBottom: "-21px" }}>Overview</span>
-              <button onClick={() => navigate("/app/pricing")} style={{ background: "#f97316", color: "#fff", border: "none", padding: "6px 16px", borderRadius: "20px", fontSize: "12px", fontWeight: "600", cursor: "pointer" }}>Manage Plan</button>
+              <Link to="/app/pricing" style={{ background: "#f97316", color: "#fff", border: "none", padding: "6px 16px", borderRadius: "20px", fontSize: "12px", fontWeight: "600", cursor: "pointer", textDecoration: "none", display: "inline-block" }}>Manage Plan</Link>
             </div>
           </div>
           <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
@@ -184,7 +187,7 @@ export default function Index() {
         {/* Design Library Overview Section */}
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "24px", marginTop: "48px" }}>
           <h2 style={{ fontSize: "20px", fontWeight: "600", margin: 0 }}>Design Templates</h2>
-          <button onClick={() => navigate("/app/library")} style={{ background: "transparent", color: "#38bdf8", border: "1px solid #38bdf8", padding: "6px 16px", borderRadius: "20px", fontSize: "12px", fontWeight: "600", cursor: "pointer" }}>View Full Library →</button>
+          <Link to="/app/library" style={{ background: "transparent", color: "#38bdf8", border: "1px solid #38bdf8", padding: "6px 16px", borderRadius: "20px", fontSize: "12px", fontWeight: "600", cursor: "pointer", textDecoration: "none", display: "inline-block" }}>View Full Library →</Link>
         </div>
 
         {/* Designs Grid */}
@@ -195,8 +198,8 @@ export default function Index() {
             return (
               <div key={design.id} style={{ background: "#1e293b", borderRadius: "16px", overflow: "hidden", position: "relative", display: "flex", flexDirection: "column", border: "1px solid rgba(255,255,255,0.05)" }}>
                 {!unlocked && <div style={{ position: "absolute", top: 0, left: 0, right: 0, bottom: 0, background: "rgba(17, 24, 39, 0.75)", backdropFilter: "blur(4px)", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", gap: "12px", zIndex: 10 }}>
-                  <button onClick={() => navigate("/app/pricing")} style={{ background: "#f97316", color: "#fff", border: "none", padding: "8px 16px", borderRadius: "20px", fontSize: "12px", fontWeight: "600", cursor: "pointer", width: "160px" }}>🔒 Upgrade to Unlock</button>
-                  <button onClick={() => setPreviewDesign(design)} style={{ background: "rgba(255,255,255,0.1)", color: "#fff", border: "1px solid rgba(255,255,255,0.2)", padding: "8px 16px", borderRadius: "20px", fontSize: "12px", fontWeight: "600", cursor: "pointer", width: "160px" }}>👁️ Preview Template</button>
+                  <Link to="/app/pricing" style={{ background: "#f97316", color: "#fff", border: "none", padding: "8px 16px", borderRadius: "20px", fontSize: "12px", fontWeight: "600", cursor: "pointer", width: "160px", textDecoration: "none", display: "inline-block", textAlign: "center", boxSizing: "border-box" }}>🔒 Upgrade to Unlock</Link>
+                  <Link to="/app/library" style={{ background: "rgba(255,255,255,0.1)", color: "#fff", border: "1px solid rgba(255,255,255,0.2)", padding: "8px 16px", borderRadius: "20px", fontSize: "12px", fontWeight: "600", cursor: "pointer", width: "160px", textDecoration: "none", display: "inline-block", textAlign: "center", boxSizing: "border-box", marginTop: "12px" }}>👁️ Open Editor</Link>
                 </div>}
                 
                 {/* Preview Box */}
@@ -209,12 +212,12 @@ export default function Index() {
                 <div style={{ padding: "16px", background: "#1e293b", display: "flex", justifyContent: "space-between", alignItems: "center", gap: "8px" }}>
                   <span style={{ fontSize: "11px", background: "rgba(255,255,255,0.05)", padding: "4px 8px", borderRadius: "6px", color: "#94a3b8", fontWeight: "600" }}>{design.tier.replace("_", " ")}</span>
                   <div style={{ display: "flex", gap: "8px" }}>
-                    <button 
-                      style={{ padding: "6px 12px", fontSize: "12px", background: "transparent", color: "#94a3b8", border: "1px solid rgba(255,255,255,0.15)", borderRadius: "12px", cursor: "pointer" }} 
-                      onClick={() => setPreviewDesign(design)}
+                    <Link 
+                      style={{ padding: "6px 12px", fontSize: "12px", background: "transparent", color: "#94a3b8", border: "1px solid rgba(255,255,255,0.15)", borderRadius: "12px", cursor: "pointer", textDecoration: "none", display: "inline-block" }} 
+                      to="/app/library"
                     >
-                      Preview
-                    </button>
+                      Open Editor
+                    </Link>
                     
                     {unlocked && (
                       active ? (
@@ -258,34 +261,7 @@ export default function Index() {
           })}
         </div>
 
-        {previewDesign && (
-          <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, background: "rgba(0,0,0,0.8)", backdropFilter: "blur(8px)", zIndex: 9999, display: "flex", justifyContent: "center", alignItems: "center" }} onClick={() => setPreviewDesign(null)}>
-            <div style={{ background: "#111827", width: "95%", maxWidth: "1000px", height: "90%", borderRadius: "16px", overflow: "hidden", display: "flex", flexDirection: "column", border: "1px solid rgba(255,255,255,0.1)" }} onClick={e => e.stopPropagation()}>
-              <div style={{ background: "#1e293b", padding: "16px 24px", borderBottom: "1px solid rgba(255,255,255,0.05)", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                <h2 style={{ margin: 0, fontSize: "16px", fontWeight: "600", color: "#fff" }}>Live Preview: {previewDesign.name}</h2>
-                <div style={{ display: "flex", gap: "8px" }}>
-                  <button style={{ padding: "6px 12px", fontSize: "12px", background: device === "mobile" ? "#38bdf8" : "transparent", color: device === "mobile" ? "#111827" : "#94a3b8", border: device === "mobile" ? "none" : "1px solid rgba(255,255,255,0.2)", borderRadius: "8px", cursor: "pointer" }} onClick={() => setDevice("mobile")}>📱 Mobile</button>
-                  <button style={{ padding: "6px 12px", fontSize: "12px", background: device === "desktop" ? "#38bdf8" : "transparent", color: device === "desktop" ? "#111827" : "#94a3b8", border: device === "desktop" ? "none" : "1px solid rgba(255,255,255,0.2)", borderRadius: "8px", cursor: "pointer" }} onClick={() => setDevice("desktop")}>💻 Desktop</button>
-                  <button style={{ padding: "6px 12px", fontSize: "12px", background: "transparent", color: "#ef4444", border: "1px solid rgba(239, 68, 68, 0.5)", borderRadius: "8px", cursor: "pointer", marginLeft: "16px" }} onClick={() => setPreviewDesign(null)}>Close</button>
-                </div>
-              </div>
-              
-              <div style={{ flexGrow: 1, overflowY: "auto", padding: "64px 20px", display: "flex", justifyContent: "center", alignItems: "flex-start", background: "repeating-linear-gradient(45deg, rgba(255,255,255,0.02) 25%, transparent 25%, transparent 75%, rgba(255,255,255,0.02) 75%, rgba(255,255,255,0.02)), repeating-linear-gradient(45deg, rgba(255,255,255,0.02) 25%, #111827 25%, #111827 75%, rgba(255,255,255,0.02) 75%, rgba(255,255,255,0.02))", backgroundPosition: "0 0, 10px 10px", backgroundSize: "20px 20px" }}>
-                <div style={{ background: previewDesign.color, width: device === "mobile" ? "100%" : "480px", maxWidth: "480px", padding: "40px", borderRadius: "16px", boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.5)", border: `1px solid ${previewDesign.borderColor}` }}>
-                  <div style={{ textAlign: "center", marginBottom: "32px" }}>
-                    <h3 style={{ margin: "0 0 12px 0", color: previewDesign.textColor, fontSize: "24px", fontWeight: "700" }}>Add a Gift Message</h3>
-                    <p style={{ color: previewDesign.textColor, opacity: 0.8, fontSize: "14px" }}>Make it special with a personalized note.</p>
-                  </div>
-                  <textarea 
-                    placeholder="Happy Birthday! Wishing you all the best..." 
-                    style={{ width: "100%", height: "120px", padding: "16px", borderRadius: "8px", border: `1px solid ${previewDesign.borderColor}`, background: previewDesign.id === 'design_6' ? 'rgba(255,255,255,0.4)' : '#fff', resize: "none", boxSizing: "border-box", fontSize: "14px", outline: "none", fontFamily: "inherit" }}
-                  ></textarea>
-                  <button style={{ width: "100%", padding: "14px", background: previewDesign.textColor, color: previewDesign.id === 'design_2' || previewDesign.id === 'design_7' ? '#111827' : '#fff', border: "none", borderRadius: "8px", marginTop: "24px", fontWeight: "600", fontSize: "14px", cursor: "pointer" }}>Save Note</button>
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
+
 
       </div>
     </div>

@@ -9,7 +9,7 @@
 {% endschema %}
 
 <script>
-  window.GiftNoteSettings = {{ app.metafields.giftnote.settings.value | default: 'null' }};
+  window.GiftNoteSettings = {{ app.metafields.giftnote.settings.value | json }};
 </script>
 
 <div id="giftnote-pro-container" class="giftnote-pro-wrapper">

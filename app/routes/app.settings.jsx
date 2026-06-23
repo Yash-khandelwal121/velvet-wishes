@@ -1,4 +1,4 @@
-import { useLoaderData, useSubmit, useNavigation, useNavigate } from "react-router";
+import { useLoaderData, useSubmit, useNavigation, useNavigate, Link } from "react-router";
 import { boundary } from "@shopify/shopify-app-react-router/server";
 import { authenticate } from "../shopify.server";
 import prisma from "../db.server";
@@ -189,7 +189,7 @@ export default function Settings() {
                       {active ? "Enabled" : "Disabled"}
                     </label>
                   ) : (
-                    <button onClick={() => navigate("/app/pricing")} style={{ fontSize: "12px", color: "#f97316", background: "transparent", border: "none", cursor: "pointer", textDecoration: "underline" }}>Upgrade to unlock</button>
+                    <Link to="/app/pricing" style={{ fontSize: "12px", color: "#f97316", background: "transparent", border: "none", cursor: "pointer", textDecoration: "underline", display: "inline-block" }}>Upgrade to unlock</Link>
                   )}
                 </div>
               );

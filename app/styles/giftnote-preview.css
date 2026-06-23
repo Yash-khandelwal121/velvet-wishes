@@ -1,0 +1,438 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Great+Vibes&family=Montserrat:wght@300;400;600&family=Inter:wght@400;500;600;700&display=swap');
+
+/* =========================================
+   DASHBOARD LAYOUT (DARK MODE) FOR ADMIN
+   ========================================= */
+.gnp-hf-dashboard {
+  background: #0f111a;
+  color: #fff;
+  font-family: 'Inter', sans-serif;
+  border-radius: 12px;
+  padding: 30px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.gnp-hf-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  padding-bottom: 20px;
+  margin-bottom: 30px;
+}
+
+.gnp-hf-header-left {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.gnp-hf-icon {
+  font-size: 32px;
+  background: rgba(255,193,7,0.1);
+  padding: 10px;
+  border-radius: 8px;
+}
+
+.gnp-hf-title {
+  margin: 0 0 5px 0;
+  font-size: 22px;
+  font-weight: 600;
+  color: #f3b755; /* goldish */
+}
+
+.gnp-hf-subtitle {
+  margin: 0;
+  font-size: 13px;
+  color: #8b92a5;
+}
+
+.gnp-hf-layout {
+  display: flex;
+  gap: 40px;
+}
+
+@media (max-width: 900px) {
+  .gnp-hf-layout {
+    flex-direction: column;
+  }
+}
+
+/* =========================================
+   LEFT SIDEBAR (TEMPLATES)
+   ========================================= */
+.gnp-hf-sidebar {
+  flex: 0 0 350px;
+  background: #151822;
+  border-radius: 12px;
+  padding: 24px;
+}
+
+.gnp-hf-section-title {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.gnp-hf-section-subtitle {
+  font-size: 12px;
+  color: #8b92a5;
+  margin-bottom: 24px;
+}
+
+.gnp-hf-templates-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-height: 600px;
+  overflow-y: auto;
+  padding-right: 10px;
+}
+
+/* Scrollbar */
+.gnp-hf-templates-list::-webkit-scrollbar {
+  width: 4px;
+}
+.gnp-hf-templates-list::-webkit-scrollbar-thumb {
+  background: #2a2d3e;
+  border-radius: 4px;
+}
+
+.gnp-hf-template-item {
+  display: flex;
+  background: #1a1e2b;
+  border: 1px solid rgba(255,255,255,0.05);
+  border-radius: 10px;
+  padding: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+  align-items: center;
+  gap: 15px;
+}
+
+.gnp-hf-template-item:hover {
+  background: #202434;
+  border-color: rgba(255,255,255,0.1);
+}
+
+.gnp-hf-template-item.active {
+  border: 1px solid #f3b755;
+  background: rgba(243, 183, 85, 0.05);
+}
+
+.gnp-hf-template-thumb {
+  width: 60px;
+  height: 40px;
+  border-radius: 6px;
+  background: #fff;
+  flex-shrink: 0;
+}
+
+.gnp-hf-template-info {
+  flex: 1;
+}
+
+.gnp-hf-template-name-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 4px;
+}
+
+.gnp-hf-t-name {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.gnp-hf-t-price {
+  font-size: 11px;
+  color: #f3b755;
+  font-weight: 600;
+}
+
+.gnp-hf-t-price.free {
+  color: #4ade80;
+}
+
+.gnp-hf-t-desc {
+  font-size: 11px;
+  color: #8b92a5;
+  line-height: 1.3;
+}
+
+/* =========================================
+   RIGHT MAIN CONTENT
+   ========================================= */
+.gnp-hf-main-content {
+  flex: 1;
+  background: #151822;
+  border-radius: 12px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+}
+
+.gnp-hf-preview-area {
+  flex: 1;
+  background: #0f111a;
+  border: 1px solid rgba(255,255,255,0.05);
+  border-radius: 12px;
+  margin-bottom: 20px;
+  padding: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.gnp-hf-status-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: #8b92a5;
+  margin-bottom: 12px;
+}
+
+.gnp-hf-indicator {
+  width: 6px;
+  height: 6px;
+  background: #4ade80;
+  border-radius: 50%;
+  box-shadow: 0 0 8px #4ade80;
+}
+
+.gnp-hf-editor-box {
+  background: #1a1e2b;
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 24px;
+}
+
+.gnp-hf-textarea {
+  width: 100%;
+  height: 100px;
+  background: transparent;
+  border: none;
+  color: #fff;
+  padding: 16px;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  resize: none;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.gnp-hf-editor-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 16px;
+  border-top: 1px solid rgba(255,255,255,0.05);
+  background: rgba(0,0,0,0.2);
+}
+
+.gnp-hf-editor-tools button {
+  background: transparent;
+  border: none;
+  color: #8b92a5;
+  cursor: pointer;
+  padding: 4px 8px;
+}
+.gnp-hf-editor-tools button:hover {
+  color: #fff;
+}
+
+.gnp-hf-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.gnp-hf-btn-cancel {
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.2);
+  color: #fff;
+  padding: 10px 24px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.gnp-hf-btn-save {
+  background: #f3b755;
+  border: none;
+  color: #000;
+  padding: 10px 24px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.gnp-hf-btn-save:hover {
+  background: #d49f4a;
+}
+
+/* =========================================
+   LIVE PREVIEW CARD (THE ACTUAL GIFT NOTE)
+   ========================================= */
+.gnp-hf-live-card-container {
+  width: 100%;
+  max-width: 500px;
+  aspect-ratio: 1.6 / 1; /* Horizontal card shape */
+  perspective: 1000px;
+}
+
+.gnp-hf-live-card {
+  width: 100%;
+  height: 100%;
+  border-radius: 12px;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  transition: all 0.5s ease;
+  box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+}
+
+.gnp-card-content {
+  position: relative;
+  z-index: 10;
+  width: 80%;
+}
+
+.gnp-card-title {
+  font-size: 18px;
+  margin-bottom: 15px;
+  letter-spacing: 2px;
+}
+
+.gnp-card-body-text {
+  font-size: 14px;
+  line-height: 1.5;
+  margin-bottom: 15px;
+}
+
+.gnp-live-text {
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 15px;
+  white-space: pre-wrap;
+}
+
+.gnp-card-footer {
+  font-size: 14px;
+  font-style: italic;
+}
+
+/* =========================================
+   THE 7 TEMPLATE DESIGNS
+   ========================================= */
+
+/* 1. Classic Note (Free) */
+.gnp-theme-classic {
+  background: #fdfbf7;
+  color: #2c3e50;
+  border: 1px solid #e0d8c3;
+}
+.gnp-theme-classic-thumb { background: #fdfbf7; border: 1px solid #e0d8c3; }
+.gnp-theme-classic .gnp-card-title { font-family: 'Playfair Display', serif; color: #b8860b; }
+.gnp-theme-classic .gnp-live-text { font-family: 'Playfair Display', serif; font-size: 20px; }
+
+/* 2. Floral Wishes ($50) */
+.gnp-theme-floral {
+  background: #fffafa;
+  color: #8b0000;
+}
+.gnp-theme-floral-thumb { background: #ffebf0; }
+.gnp-theme-floral .gnp-theme-decor-1 {
+  position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+  background: radial-gradient(circle at top left, rgba(255,182,193,0.4) 0%, transparent 50%),
+              radial-gradient(circle at bottom right, rgba(255,182,193,0.4) 0%, transparent 50%);
+}
+.gnp-theme-floral .gnp-card-title { font-family: 'Montserrat', sans-serif; font-weight: 300; }
+.gnp-theme-floral .gnp-live-text { font-family: 'Great Vibes', cursive; font-size: 28px; }
+
+/* 3. Luxury Black Gold ($50) */
+.gnp-theme-blackgold {
+  background: #111;
+  color: #d4af37;
+  border: 2px solid #222;
+}
+.gnp-theme-blackgold-thumb { background: #111; border: 1px solid #d4af37; }
+.gnp-theme-blackgold .gnp-theme-decor-1 {
+  position: absolute; top: 10px; left: 10px; right: 10px; bottom: 10px;
+  border: 1px solid #d4af37;
+  opacity: 0.5;
+}
+.gnp-theme-blackgold .gnp-card-title { font-family: 'Montserrat', sans-serif; }
+.gnp-theme-blackgold .gnp-live-text { font-family: 'Montserrat', sans-serif; font-weight: 300; }
+
+/* 4. Celebration Card ($70) */
+.gnp-theme-celebration {
+  background: #fffdeb;
+  color: #e63946;
+  border: 4px dashed #f4a261;
+}
+.gnp-theme-celebration-thumb { background: #fffdeb; border: 2px dashed #f4a261; }
+.gnp-theme-celebration .gnp-card-title { font-family: 'Montserrat', sans-serif; font-weight: bold; }
+.gnp-theme-celebration .gnp-live-text { font-family: 'Montserrat', sans-serif; font-weight: bold; font-size: 20px;}
+
+/* 5. Romantic Elegance ($70) */
+.gnp-theme-romantic {
+  background: linear-gradient(135deg, #ffe6ea 0%, #ffc0cb 100%);
+  color: #b00020;
+}
+.gnp-theme-romantic-thumb { background: #ffc0cb; }
+.gnp-theme-romantic .gnp-card-title { font-family: 'Great Vibes', cursive; font-size: 26px; text-transform: none; }
+.gnp-theme-romantic .gnp-live-text { font-family: 'Playfair Display', serif; font-style: italic; font-size: 22px;}
+
+/* 6. Royal Luxury ($100) - Matches the Screenshot */
+.gnp-theme-royal {
+  background: linear-gradient(135deg, #0b132b 0%, #1c2541 100%);
+  color: #f3b755;
+  box-shadow: 0 0 30px rgba(243,183,85,0.2) inset;
+}
+.gnp-theme-royal-thumb { background: #0b132b; border: 1px solid #f3b755; }
+.gnp-theme-royal .gnp-theme-decor-1 {
+  position: absolute; top: 15px; left: 15px; right: 15px; bottom: 15px;
+  border: 1px solid rgba(243,183,85,0.5);
+}
+.gnp-theme-royal .gnp-theme-decor-2 {
+  position: absolute; top: -20px; left: -20px;
+  width: 150px; height: 150px;
+  background: linear-gradient(45deg, transparent 40%, #f3b755 40%, #d49f4a 60%, transparent 60%);
+  z-index: 1;
+}
+.gnp-theme-royal .gnp-crown-icon { font-size: 24px; margin-bottom: 10px; }
+.gnp-theme-royal .gnp-card-title { font-family: 'Playfair Display', serif; font-weight: 600; font-size: 22px; color: #f3b755;}
+.gnp-theme-royal .gnp-card-body-text { font-family: 'Playfair Display', serif; font-style: italic; color: #a1b0c0; }
+.gnp-theme-royal .gnp-live-text { font-family: 'Inter', sans-serif; font-size: 16px; font-weight: 400; color: #fff;}
+.gnp-theme-royal .gnp-card-footer { font-family: 'Great Vibes', cursive; font-size: 24px; color: #f3b755; margin-top: 10px;}
+
+/* 7. 3D Magic Gift ($100) */
+.gnp-theme-3d {
+  background: #1a0b2e;
+  color: #d8b4e2;
+  transform-style: preserve-3d;
+}
+.gnp-theme-3d-thumb { background: #1a0b2e; }
+.gnp-hf-live-card-container:hover .gnp-theme-3d {
+  transform: rotateX(10deg) rotateY(-10deg) scale(1.02);
+}
+.gnp-theme-3d .gnp-theme-decor-1 {
+  position: absolute; top: 20px; left: 20px; right: 20px; bottom: 20px;
+  border: 1px solid rgba(216,180,226,0.3);
+  transform: translateZ(30px);
+}
+.gnp-theme-3d .gnp-card-content {
+  transform: translateZ(50px);
+  text-shadow: 0 5px 15px rgba(0,0,0,0.8);
+}
+.gnp-theme-3d .gnp-card-title { font-family: 'Montserrat', sans-serif; font-weight: bold; color: #fff; }
+.gnp-theme-3d .gnp-live-text { font-family: 'Montserrat', sans-serif; font-weight: bold; color: #fff; font-size: 18px;}
