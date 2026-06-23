@@ -371,7 +371,7 @@
 .gnp-theme-3d {
   background: #1a0b2e;
   color: #d8b4e2;
-  transform-style: preserve-3d;
+  transform-style: preserve-3d !important;
 }
 .gnp-theme-3d-thumb { background: #1a0b2e; }
 .gnp-live-card-container:hover .gnp-theme-3d {
@@ -401,7 +401,8 @@
   aspect-ratio: 450 / 280;
   margin: 0 auto;
   cursor: pointer;
-  perspective: 1000px;
+  perspective: 1000px !important;
+  transform-style: preserve-3d !important;
 }
 
 .gnp-interactive-hint {
@@ -559,6 +560,7 @@
 .gnp-envelope-wrapper.is-open .gnp-envelope-flap {
   transform: rotateX(180deg);
   z-index: 1;
+  backface-visibility: hidden !important;
 }
 .gnp-envelope-wrapper.is-open .gnp-card-insert {
   transform: translateY(-80px) scale(1);

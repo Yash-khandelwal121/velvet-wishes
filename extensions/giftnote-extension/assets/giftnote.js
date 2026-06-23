@@ -2,6 +2,10 @@ function initGiftNote() {
   const settings = window.GiftNoteSettings || {};
   const containers = document.querySelectorAll(".giftnote-pro-wrapper:not(.gnp-initialized)");
   
+  if (containers.length > 0) {
+    console.log(`[GiftNote Pro] Initializing ${containers.length} widget(s)...`);
+  }
+
   containers.forEach(container => {
     container.classList.add('gnp-initialized');
     
@@ -11,7 +15,7 @@ function initGiftNote() {
         ? JSON.parse(settings.activeCards)
         : (settings.activeCards || ["design_1"]);
     } catch (e) {
-      console.error("Failed to parse activeCards", e);
+      console.error("[GiftNote Pro] Failed to parse activeCards, falling back to default.", e);
     }
 
     const designs = [
@@ -27,7 +31,8 @@ function initGiftNote() {
     const availableDesigns = designs.filter(d => activeCards.includes(d.id)).slice(0, settings.maxCards || 7);
     if (availableDesigns.length === 0) availableDesigns.push(designs[0]);
 
-    let selectedDesign = availableDesigns.find(d => d.id === 'design_6') || availableDesigns[0];
+    // Default to the first available premium animated design if possible
+    let selectedDesign = availableDesigns.find(d => ['design_6', 'design_4', 'design_7'].includes(d.id)) || availableDesigns[0];
 
     const uid = Math.random().toString(36).substr(2, 9);
 
@@ -170,17 +175,6 @@ function initGiftNote() {
       }
     };
 
-    const attachInteractiveListeners = () => {
-      const interactiveWrapper = container.querySelector('.gnp-interactive-wrapper');
-      if (interactiveWrapper) {
-        interactiveWrapper.addEventListener('click', function() {
-          this.classList.toggle('is-open');
-          const hint = this.querySelector('.gnp-interactive-hint');
-          if (hint) hint.style.opacity = '0';
-        });
-      }
-    };
-
     const selectDesign = (cardId, itemEl) => {
       const design = designs.find(d => d.id === cardId);
       if (!design) return;
@@ -190,15 +184,13 @@ function initGiftNote() {
       if (itemEl) itemEl.classList.add('active');
       
       previewSection.innerHTML = getPreviewHTML(selectedDesign);
-      
       updatePreview();
-      attachInteractiveListeners();
 
       fetch('/apps/giftnote', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ shop: window.Shopify ? window.Shopify.shop : '', action: 'select' })
-      }).catch(e => console.error(e));
+      }).catch(e => { /* Ignore proxy errors silently in prod */ });
     };
 
     const saveNote = () => {
@@ -223,31 +215,35 @@ function initGiftNote() {
 
       if (saveBtn) saveBtn.innerText = "Saving...";
 
-      if (!window.Shopify || !window.Shopify.routes) {
-        setTimeout(() => {
-          if (saveBtn) saveBtn.innerText = "Demo Saved!";
-          setTimeout(() => { if (saveBtn) saveBtn.innerText = "Save Gift Note"; }, 3000);
-        }, 500);
-        return;
-      }
+      // Robust fallback for Cart API endpoint
+      const cartUrl = (window.Shopify && window.Shopify.routes && window.Shopify.routes.root) 
+          ? window.Shopify.routes.root + 'cart/update.js' 
+          : '/cart/update.js';
 
-      fetch(window.Shopify.routes.root + 'cart/update.js', {
+      fetch(cartUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data)
       })
-      .then(response => response.json())
+      .then(response => {
+        if (!response.ok) throw new Error("Network response was not ok");
+        return response.json();
+      })
       .then(data => {
         if (saveBtn) saveBtn.innerText = "Message Saved!";
         setTimeout(() => { if (saveBtn) saveBtn.innerText = "Save Gift Note"; }, 3000);
+        
+        // Dispatch event for other apps or theme cart to update
+        document.dispatchEvent(new CustomEvent('cart:updated', { detail: data }));
+        
         fetch('/apps/giftnote', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ shop: window.Shopify.shop, action: 'submit' })
-        }).catch(e => console.error(e));
+          body: JSON.stringify({ shop: window.Shopify?.shop || '', action: 'submit' })
+        }).catch(e => {});
       })
       .catch((error) => {
-        console.error('Error:', error);
+        console.error('[GiftNote Pro] Error Saving:', error);
         if (saveBtn) saveBtn.innerText = "Error Saving";
         setTimeout(() => { if (saveBtn) saveBtn.innerText = "Save Gift Note"; }, 3000);
       });
@@ -269,22 +265,63 @@ function initGiftNote() {
     }
 
     updatePreview();
-    attachInteractiveListeners();
 
     fetch('/apps/giftnote', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ shop: window.Shopify ? window.Shopify.shop : '', action: 'view' })
-    }).catch(e => console.error(e));
+    }).catch(e => {});
   });
 }
 
+// Global Event Delegation for Interactive Wrappers
+// This ensures that even if the theme clones the DOM nodes (e.g. AJAX carts), the interactions still work!
+if (!window.gnpGlobalEventsAttached) {
+  window.gnpGlobalEventsAttached = true;
+  document.addEventListener('click', function(e) {
+    const interactiveWrapper = e.target.closest('.gnp-interactive-wrapper');
+    if (interactiveWrapper) {
+      interactiveWrapper.classList.toggle('is-open');
+      const hint = interactiveWrapper.querySelector('.gnp-interactive-hint');
+      if (hint) hint.style.opacity = '0';
+    }
+  });
+}
+
+// Initialize immediately if ready, or wait for DOM
 if (document.readyState === 'loading') {
   document.addEventListener("DOMContentLoaded", initGiftNote);
 } else {
   initGiftNote();
 }
 
+// Global MutationObserver to detect dynamically added widgets (e.g. AJAX Drawer Carts, Quick Views)
+if (!window.gnpMutationObserver) {
+  window.gnpMutationObserver = new MutationObserver((mutations) => {
+    let shouldInit = false;
+    for (const mutation of mutations) {
+      if (mutation.addedNodes.length) {
+        for (const node of mutation.addedNodes) {
+          if (node.nodeType === 1) {
+            // Check if the added node is the wrapper or contains the wrapper
+            if (node.classList?.contains('giftnote-pro-wrapper') || node.querySelector?.('.giftnote-pro-wrapper:not(.gnp-initialized)')) {
+              shouldInit = true;
+              break;
+            }
+          }
+        }
+      }
+      if (shouldInit) break;
+    }
+    if (shouldInit) {
+      // Small debounce to let theme scripts finish cloning/modifying
+      setTimeout(initGiftNote, 50);
+    }
+  });
+  window.gnpMutationObserver.observe(document.body, { childList: true, subtree: true });
+}
+
+// Shopify Theme Editor specific events
 document.addEventListener('shopify:section:load', () => {
   document.querySelectorAll(".giftnote-pro-wrapper").forEach(el => el.classList.remove('gnp-initialized'));
   initGiftNote();
