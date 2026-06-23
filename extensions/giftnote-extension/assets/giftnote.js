@@ -57,25 +57,8 @@ function initGiftNote() {
     const getPreviewHTML = (design) => {
       const cardHtml = getCardHTML(design);
       
-      if (design.id === 'design_6' || design.id === 'design_2' || design.id === 'design_1') {
-        // Ribbon Experience
-        return `
-          <div class="gnp-interactive-wrapper gnp-ribbon-wrapper" tabindex="0">
-            <div class="gnp-card-insert">${cardHtml}</div>
-            <div class="gnp-ribbon-left"></div>
-            <div class="gnp-ribbon-right"></div>
-            <div class="gnp-ribbon-center">
-               <div class="gnp-bow">
-                  <div class="gnp-bow-tail left"></div>
-                  <div class="gnp-bow-tail right"></div>
-                  <div class="gnp-bow-heart"></div>
-               </div>
-            </div>
-            <div class="gnp-interactive-hint">Tap to untie</div>
-          </div>
-        `;
-      } else if (design.id === 'design_4') {
-        // Envelope Experience
+      if (design.id === 'design_4' || design.id === 'design_3') {
+        // Envelope Experience (Celebration, Luxury Black)
         return `
           <div class="gnp-interactive-wrapper gnp-envelope-wrapper" tabindex="0">
             <div class="gnp-envelope-back"></div>
@@ -86,7 +69,7 @@ function initGiftNote() {
           </div>
         `;
       } else if (design.id === 'design_7') {
-        // 3D Box Experience
+        // 3D Box Experience (Magic)
         return `
           <div class="gnp-interactive-wrapper gnp-3d-box-wrapper" tabindex="0">
             <div class="gnp-box-back"></div>
@@ -105,9 +88,20 @@ function initGiftNote() {
           </div>
         `;
       } else {
+        // Ribbon Experience (Default for Classic, Floral, Romantic, Royal, etc)
         return `
-          <div class="gnp-live-card-container">
-            ${cardHtml}
+          <div class="gnp-interactive-wrapper gnp-ribbon-wrapper" tabindex="0">
+            <div class="gnp-card-insert">${cardHtml}</div>
+            <div class="gnp-ribbon-left"></div>
+            <div class="gnp-ribbon-right"></div>
+            <div class="gnp-ribbon-center">
+               <div class="gnp-bow">
+                  <div class="gnp-bow-tail left"></div>
+                  <div class="gnp-bow-tail right"></div>
+                  <div class="gnp-bow-heart"></div>
+               </div>
+            </div>
+            <div class="gnp-interactive-hint">Tap to untie</div>
           </div>
         `;
       }
