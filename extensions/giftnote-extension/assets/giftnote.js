@@ -19,16 +19,16 @@ function initGiftNote() {
     }
 
     const designs = [
-      { id: "design_1", class: "gnp-theme-classic", name: "Classic", title: "CLASSIC NOTE", desc: "Simple, elegant and perfect for any occasion.", price: "Free" },
-      { id: "design_2", class: "gnp-theme-floral", name: "Floral", title: "FLORAL WISHES", desc: "Beautiful floral design for heartfelt moments.", price: "$50" },
-      { id: "design_3", class: "gnp-theme-blackgold", name: "Luxury Black", title: "LUXURY GIFT", desc: "Premium black & gold style for a luxury touch.", price: "$50" },
-      { id: "design_4", class: "gnp-theme-celebration", name: "Celebration", title: "CELEBRATION", desc: "Bright, joyful and perfect for celebrations.", price: "$70" },
-      { id: "design_5", class: "gnp-theme-romantic", name: "Romantic", title: "ROMANCE", desc: "Elegant design for your loved ones.", price: "$70" },
-      { id: "design_6", class: "gnp-theme-royal", name: "Royal", title: "ROYAL GIFT NOTE", desc: "Royal, elegant and truly premium experience.", price: "$100" },
-      { id: "design_7", class: "gnp-theme-3d", name: "Magic", title: "MAGIC GIFT", desc: "3D animated gift box with magical vibes.", price: "$100" }
+      { id: "design_1", class: "gnp-theme-classic", name: "Classic Note", title: "CLASSIC NOTE", desc: "Simple, elegant and perfect for any occasion.", price: "Free" },
+      { id: "design_2", class: "gnp-theme-floral", name: "Floral Wishes", title: "FLORAL WISHES", desc: "Beautiful floral design for heartfelt moments.", price: "$50" },
+      { id: "design_3", class: "gnp-theme-blackgold", name: "Luxury Black Gold", title: "LUXURY GIFT", desc: "Premium black & gold style for a luxury touch.", price: "$50" },
+      { id: "design_4", class: "gnp-theme-celebration", name: "Celebration Card", title: "CELEBRATION", desc: "Bright, joyful and perfect for celebrations.", price: "$70" },
+      { id: "design_5", class: "gnp-theme-romantic", name: "Romantic Elegance", title: "ROMANCE", desc: "Elegant design for your loved ones.", price: "$70" },
+      { id: "design_6", class: "gnp-theme-royal", name: "Royal Luxury", title: "ROYAL GIFT NOTE", desc: "Royal, elegant and truly premium experience.", price: "$100" },
+      { id: "design_7", class: "gnp-theme-3d", name: "3D Magic Gift", title: "MAGIC GIFT", desc: "3D animated gift box with magical vibes.", price: "$100" }
     ];
 
-    const availableDesigns = designs.filter(d => activeCards.includes(d.id)).slice(0, settings.maxCards || 7);
+    const availableDesigns = designs.filter(d => activeCards.includes(d.id)).slice(0, 7);
     if (availableDesigns.length === 0) availableDesigns.push(designs[0]);
 
     // Default to the first available premium animated design if possible
@@ -36,119 +36,20 @@ function initGiftNote() {
 
     const uid = Math.random().toString(36).substr(2, 9);
 
-    const getCardHTML = (design) => `
-      <div class="gnp-live-card ${design.class}">
-        <div class="gnp-card-content">
-          <div class="gnp-crown-icon">👑</div>
-          <div class="gnp-card-title">${design.title}</div>
-          <div class="gnp-card-body-text">
-            <p>A gift chosen with care,<br>wrapped with elegance,<br>and delivered with love.</p>
-          </div>
-          <div class="gnp-card-user-message">
-            <p class="gnp-live-text">Your message will appear here...</p>
-          </div>
-          <div class="gnp-card-footer">♡ With Love</div>
-        </div>
-        <div class="gnp-theme-decor-1"></div>
-        <div class="gnp-theme-decor-2"></div>
-      </div>
-    `;
+    const getCardHTML = (design) => `<div class="gnp-live-card ${design.class}"><div class="gnp-card-content"><div class="gnp-crown-icon">👑</div><div class="gnp-card-title">${design.title}</div><div class="gnp-card-body-text"><p>A gift chosen with care,<br>wrapped with elegance,<br>and delivered with love.</p></div><div class="gnp-card-user-message"><p class="gnp-live-text">Your message will appear here...</p></div><div class="gnp-card-footer">♡ With Love</div></div><div class="gnp-theme-decor-1"></div><div class="gnp-theme-decor-2"></div></div>`;
 
     const getPreviewHTML = (design) => {
       const cardHtml = getCardHTML(design);
-      
       if (design.id === 'design_4' || design.id === 'design_3') {
-        // Envelope Experience (Celebration, Luxury Black)
-        return `
-          <div class="gnp-interactive-wrapper gnp-envelope-wrapper" tabindex="0">
-            <div class="gnp-envelope-back"></div>
-            <div class="gnp-card-insert">${cardHtml}</div>
-            <div class="gnp-envelope-flap"></div>
-            <div class="gnp-envelope-front"></div>
-            <div class="gnp-interactive-hint">Tap to open envelope</div>
-          </div>
-        `;
+        return `<div class="gnp-interactive-wrapper gnp-envelope-wrapper" tabindex="0"><div class="gnp-envelope-back"></div><div class="gnp-card-insert">${cardHtml}</div><div class="gnp-envelope-flap"></div><div class="gnp-envelope-front"></div><div class="gnp-interactive-hint">Tap to open</div></div>`;
       } else if (design.id === 'design_7') {
-        // 3D Box Experience (Magic)
-        return `
-          <div class="gnp-interactive-wrapper gnp-3d-box-wrapper" tabindex="0">
-            <div class="gnp-box-back"></div>
-            <div class="gnp-card-insert">${cardHtml}</div>
-            <div class="gnp-box-front"></div>
-            <div class="gnp-box-lid">
-               <div class="gnp-lid-top"></div>
-               <div class="gnp-lid-bow"></div>
-            </div>
-            <div class="gnp-sparkles">
-               <div class="gnp-sparkle s1">✨</div>
-               <div class="gnp-sparkle s2">✨</div>
-               <div class="gnp-sparkle s3">✨</div>
-            </div>
-            <div class="gnp-interactive-hint">Tap to open box</div>
-          </div>
-        `;
+        return `<div class="gnp-interactive-wrapper gnp-3d-box-wrapper" tabindex="0"><div class="gnp-box-back"></div><div class="gnp-card-insert">${cardHtml}</div><div class="gnp-box-front"></div><div class="gnp-box-lid"><div class="gnp-lid-top"></div><div class="gnp-lid-bow"></div></div><div class="gnp-sparkles"><div class="gnp-sparkle s1">✨</div><div class="gnp-sparkle s2">✨</div><div class="gnp-sparkle s3">✨</div></div><div class="gnp-interactive-hint">Tap to open</div></div>`;
       } else {
-        // Ribbon Experience (Default for Classic, Floral, Romantic, Royal, etc)
-        return `
-          <div class="gnp-interactive-wrapper gnp-ribbon-wrapper" tabindex="0">
-            <div class="gnp-card-insert">${cardHtml}</div>
-            <div class="gnp-ribbon-left"></div>
-            <div class="gnp-ribbon-right"></div>
-            <div class="gnp-ribbon-center">
-               <div class="gnp-bow">
-                  <div class="gnp-bow-tail left"></div>
-                  <div class="gnp-bow-tail right"></div>
-                  <div class="gnp-bow-heart"></div>
-               </div>
-            </div>
-            <div class="gnp-interactive-hint">Tap to untie</div>
-          </div>
-        `;
+        return `<div class="gnp-interactive-wrapper gnp-ribbon-wrapper" tabindex="0"><div class="gnp-card-insert">${cardHtml}</div><div class="gnp-ribbon-left"></div><div class="gnp-ribbon-right"></div><div class="gnp-ribbon-center"><div class="gnp-bow"><div class="gnp-bow-tail left"></div><div class="gnp-bow-tail right"></div><div class="gnp-bow-heart"></div></div></div><div class="gnp-interactive-hint">Tap to untie</div></div>`;
       }
     };
 
-    let html = `
-      <div class="gnp-widget-container">
-        <input type="checkbox" id="gnp-toggle-${uid}" class="gnp-hidden-toggle" />
-        
-        <div class="gnp-opt-in">
-          <label class="gnp-checkbox-label" for="gnp-toggle-${uid}">
-            <span class="gnp-checkbox-custom"></span>
-            <span class="gnp-checkbox-text">Include a Premium Gift Note</span>
-          </label>
-        </div>
-
-        <div class="gnp-main-widget-area gnp-main-area-hidden">
-          <h3 class="gnp-widget-title">Add a Personal Touch</h3>
-          <p class="gnp-widget-subtitle">Select a premium gift card and include your message.</p>
-        
-          <div class="gnp-carousel-container">
-            <div class="gnp-carousel">
-              ${availableDesigns.map(d => `
-                <div class="gnp-carousel-item ${d.id === selectedDesign.id ? 'active' : ''}" 
-                     data-gnp-design="${d.id}">
-                  <div class="gnp-thumb ${d.class}-thumb">
-                    <span style="font-size: 8px; font-weight: bold; opacity: 0.5;">${d.title.split(' ')[0]}</span>
-                  </div>
-                  <div class="gnp-thumb-name">${d.name}</div>
-                </div>
-              `).join('')}
-            </div>
-          </div>
-
-          <div class="gnp-preview-section">
-             ${getPreviewHTML(selectedDesign)}
-          </div>
-
-          <div class="gnp-editor-section">
-            <textarea class="gnp-simple-textarea gnp-message-input" placeholder="Type your heartfelt message here..."></textarea>
-            <div class="gnp-actions">
-              <button type="button" class="gnp-btn-save gnp-btn-save-note">Save Gift Note</button>
-            </div>
-          </div>
-        </div>
-      </div>
-    `;
+    let html = `<div class="gnp-widget-container"><input type="checkbox" id="gnp-toggle-${uid}" class="gnp-hidden-toggle"/><div class="gnp-opt-in"><label class="gnp-checkbox-label" for="gnp-toggle-${uid}"><span class="gnp-checkbox-custom"></span><span class="gnp-checkbox-text">Include a Premium Gift Note</span></label></div><div class="gnp-main-widget-area gnp-main-area-hidden"><h3 class="gnp-widget-title">Add a Personal Touch</h3><p class="gnp-widget-subtitle">Select a premium gift card.</p><div class="gnp-carousel-container"><div class="gnp-carousel">${availableDesigns.map(d => `<div class="gnp-carousel-item ${d.id===selectedDesign.id?'active':''}" data-gnp-design="${d.id}"><div class="gnp-thumb ${d.class}-thumb"><span style="font-size:8px;font-weight:bold;opacity:0.5;">${d.title.split(' ')[0]}</span></div><div class="gnp-thumb-name">${d.name}</div></div>`).join('')}</div></div><div class="gnp-preview-section">${getPreviewHTML(selectedDesign)}</div><div class="gnp-editor-section"><textarea class="gnp-simple-textarea gnp-message-input" placeholder="Type heartfelt message..."></textarea><div class="gnp-actions"><button type="button" class="gnp-btn-save gnp-btn-save-note">Save Gift Note</button></div></div></div></div>`;
 
     container.innerHTML = html;
 

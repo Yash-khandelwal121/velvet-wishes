@@ -1,6 +1,6 @@
 import { boundary } from "@shopify/shopify-app-react-router/server";
 import { useState, useEffect } from "react";
-import { useLoaderData, useNavigate, useSubmit, Link } from "react-router";
+import { useLoaderData, useNavigate, useSubmit, Link, useNavigation } from "react-router";
 import { authenticate } from "../shopify.server";
 import { syncSubscription } from "../utils/billing.server";
 import prisma from "../db.server";
@@ -111,6 +111,8 @@ export default function Library() {
 
   const navigate = useNavigate();
   const submit = useSubmit();
+  const navigation = useNavigation();
+  const isUpdating = navigation.state !== "idle";
 
   const handleToggleActive = (cardId, actionType) => {
     submit({ cardId, actionType }, { method: "post" });
@@ -129,8 +131,9 @@ export default function Library() {
               <p className="gnp-hf-subtitle">Add a personal touch to every gift.</p>
             </div>
           </div>
-          <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
+          <div style={{ display: "flex", gap: "16px", alignItems: "center" }}>
             <Link to="/app" style={{ background: "transparent", color: "#8b92a5", border: "1px solid rgba(255,255,255,0.1)", padding: "8px 16px", borderRadius: "20px", fontSize: "12px", cursor: "pointer", textDecoration: "none", display: "inline-block" }}>← Dashboard</Link>
+            <svg onClick={() => window.shopify && window.shopify.toast.show('No new notifications')} style={{ cursor: "pointer" }} width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" strokeWidth="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
             <div style={{ background: "rgba(255,255,255,0.05)", padding: "8px 16px", borderRadius: "20px", fontSize: "12px", color: "#f3b755" }}>
               Plan: {plan}
             </div>
@@ -164,19 +167,21 @@ export default function Library() {
                       {/* Admin Controls */}
                       <div style={{ marginTop: "8px", display: "flex", justifyContent: "flex-end" }}>
                         {isActive ? (
-                          <span 
+                          <button 
+                            disabled={isUpdating}
                             onClick={(e) => { e.stopPropagation(); handleToggleActive(d.id, "disable"); }}
-                            style={{ fontSize: "10px", color: "#4ade80", background: "rgba(74, 222, 128, 0.1)", padding: "2px 8px", borderRadius: "4px", cursor: "pointer" }}
+                            style={{ border: "none", fontSize: "10px", color: "#4ade80", background: "rgba(74, 222, 128, 0.1)", padding: "4px 8px", borderRadius: "4px", cursor: isUpdating ? "wait" : "pointer", opacity: isUpdating ? 0.7 : 1 }}
                           >
-                            ✓ Active Storefront
-                          </span>
+                            {isUpdating ? "..." : "✓ Active Storefront"}
+                          </button>
                         ) : (
-                          <span 
+                          <button 
+                            disabled={isUpdating}
                             onClick={(e) => { e.stopPropagation(); handleToggleActive(d.id, "enable"); }}
-                            style={{ fontSize: "10px", color: "#8b92a5", background: "rgba(255,255,255,0.05)", padding: "2px 8px", borderRadius: "4px", cursor: "pointer" }}
+                            style={{ border: "none", fontSize: "10px", color: "#8b92a5", background: "rgba(255,255,255,0.05)", padding: "4px 8px", borderRadius: "4px", cursor: isUpdating ? "wait" : "pointer", opacity: isUpdating ? 0.7 : 1 }}
                           >
-                            + Enable on Storefront
-                          </span>
+                            {isUpdating ? "..." : "+ Enable on Storefront"}
+                          </button>
                         )}
                       </div>
 
