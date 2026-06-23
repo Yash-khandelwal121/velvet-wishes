@@ -52,12 +52,8 @@ export const action = async ({ request }) => {
   let cardOrder = JSON.parse(settings.cardOrder || '["design_1"]');
 
   if (actionType === "enable") {
-    if (!activeCards.includes(cardId)) {
-      activeCards.push(cardId);
-    }
-    if (!cardOrder.includes(cardId)) {
-      cardOrder.push(cardId);
-    }
+    activeCards = [cardId];
+    cardOrder = [cardId];
   } else if (actionType === "disable") {
     activeCards = activeCards.filter(id => id !== cardId);
     if (activeCards.length === 0) {
@@ -87,13 +83,13 @@ export const action = async ({ request }) => {
 };
 
 const ALL_DESIGNS = [
-  { id: "design_1", class: "gnp-theme-classic", name: "1. Classic Note", desc: "Simple, elegant and perfect for any occasion.", price: "Free", title: "CLASSIC NOTE" },
-  { id: "design_2", class: "gnp-theme-floral", name: "2. Floral Wishes", desc: "Beautiful floral design for heartfelt moments.", price: "$50", title: "FLORAL WISHES" },
-  { id: "design_3", class: "gnp-theme-blackgold", name: "3. Luxury Black Gold", desc: "Premium black & gold style for a luxury touch.", price: "$50", title: "LUXURY GIFT" },
-  { id: "design_4", class: "gnp-theme-celebration", name: "4. Celebration Card", desc: "Bright, joyful and perfect for celebrations.", price: "$70", title: "CELEBRATION" },
-  { id: "design_5", class: "gnp-theme-romantic", name: "5. Romantic Elegance", desc: "Elegant design for your loved ones.", price: "$70", title: "ROMANCE" },
-  { id: "design_6", class: "gnp-theme-royal", name: "6. Royal Luxury", desc: "Royal, elegant and truly premium experience.", price: "$100", title: "ROYAL GIFT NOTE" },
-  { id: "design_7", class: "gnp-theme-3d", name: "7. 3D Magic Gift", desc: "3D animated gift box with magical vibes.", price: "$100", title: "MAGIC GIFT" }
+  { id: "design_1", class: "gnp-theme-classic", name: "Classic Note", desc: "Simple, elegant and perfect for any occasion.", price: "Free", title: "CLASSIC NOTE" },
+  { id: "design_2", class: "gnp-theme-floral", name: "Floral Wishes", desc: "Beautiful floral design for heartfelt moments.", price: "$50", title: "FLORAL WISHES" },
+  { id: "design_3", class: "gnp-theme-blackgold", name: "Luxury Black Gold", desc: "Premium black & gold style for a luxury touch.", price: "$50", title: "LUXURY GIFT" },
+  { id: "design_4", class: "gnp-theme-celebration", name: "Celebration Card", desc: "Bright, joyful and perfect for celebrations.", price: "$70", title: "CELEBRATION" },
+  { id: "design_5", class: "gnp-theme-romantic", name: "Romantic Elegance", desc: "Elegant design for your loved ones.", price: "$70", title: "ROMANCE" },
+  { id: "design_6", class: "gnp-theme-royal", name: "Royal Luxury", desc: "Royal, elegant and truly premium experience.", price: "$100", title: "ROYAL GIFT NOTE" },
+  { id: "design_7", class: "gnp-theme-3d", name: "3D Magic Gift", desc: "3D animated gift box with magical vibes.", price: "$100", title: "MAGIC GIFT" }
 ];
 
 export default function Library() {
@@ -166,23 +162,26 @@ export default function Library() {
                       
                       {/* Admin Controls */}
                       <div style={{ marginTop: "8px", display: "flex", justifyContent: "flex-end" }}>
-                        {isActive ? (
-                          <button 
-                            disabled={isUpdating}
-                            onClick={(e) => { e.stopPropagation(); handleToggleActive(d.id, "disable"); }}
-                            style={{ border: "none", fontSize: "10px", color: "#4ade80", background: "rgba(74, 222, 128, 0.1)", padding: "4px 8px", borderRadius: "4px", cursor: isUpdating ? "wait" : "pointer", opacity: isUpdating ? 0.7 : 1 }}
-                          >
-                            {isUpdating ? "..." : "✓ Active Storefront"}
-                          </button>
-                        ) : (
-                          <button 
-                            disabled={isUpdating}
-                            onClick={(e) => { e.stopPropagation(); handleToggleActive(d.id, "enable"); }}
-                            style={{ border: "none", fontSize: "10px", color: "#8b92a5", background: "rgba(255,255,255,0.05)", padding: "4px 8px", borderRadius: "4px", cursor: isUpdating ? "wait" : "pointer", opacity: isUpdating ? 0.7 : 1 }}
-                          >
-                            {isUpdating ? "..." : "+ Enable on Storefront"}
-                          </button>
-                        )}
+                        {(() => {
+                          const isThisCardUpdating = isUpdating && navigation.formData?.get("cardId") === d.id;
+                          return isActive ? (
+                            <button 
+                              disabled={isUpdating}
+                              onClick={(e) => { e.stopPropagation(); handleToggleActive(d.id, "disable"); }}
+                              style={{ border: "none", fontSize: "10px", color: "#4ade80", background: "rgba(74, 222, 128, 0.1)", padding: "4px 8px", borderRadius: "4px", cursor: isUpdating ? "wait" : "pointer", opacity: isUpdating ? 0.7 : 1 }}
+                            >
+                              {isThisCardUpdating ? "..." : "✓ Active Storefront"}
+                            </button>
+                          ) : (
+                            <button 
+                              disabled={isUpdating}
+                              onClick={(e) => { e.stopPropagation(); handleToggleActive(d.id, "enable"); }}
+                              style={{ border: "none", fontSize: "10px", color: "#8b92a5", background: "rgba(255,255,255,0.05)", padding: "4px 8px", borderRadius: "4px", cursor: isUpdating ? "wait" : "pointer", opacity: isUpdating ? 0.7 : 1 }}
+                            >
+                              {isThisCardUpdating ? "..." : "+ Enable on Storefront"}
+                            </button>
+                          );
+                        })()}
                       </div>
 
                     </div>

@@ -28,7 +28,8 @@ function initGiftNote() {
       { id: "design_7", class: "gnp-theme-3d", name: "3D Magic Gift", title: "MAGIC GIFT", desc: "3D animated gift box with magical vibes.", price: "$100" }
     ];
 
-    const availableDesigns = designs.filter(d => activeCards.includes(d.id)).slice(0, 7);
+    const maxCards = parseInt(settings.maxCards || 7, 10);
+    const availableDesigns = designs.filter(d => activeCards.includes(d.id)).slice(0, maxCards);
     if (availableDesigns.length === 0) availableDesigns.push(designs[0]);
 
     // Default to the first available premium animated design if possible
@@ -43,7 +44,7 @@ function initGiftNote() {
       if (design.id === 'design_4' || design.id === 'design_3') {
         return `<div class="gnp-interactive-wrapper gnp-envelope-wrapper" tabindex="0"><div class="gnp-envelope-back"></div><div class="gnp-card-insert">${cardHtml}</div><div class="gnp-envelope-flap"></div><div class="gnp-envelope-front"></div><div class="gnp-interactive-hint">Tap to open</div></div>`;
       } else if (design.id === 'design_7') {
-        return `<div class="gnp-interactive-wrapper gnp-3d-box-wrapper" tabindex="0"><div class="gnp-box-back"></div><div class="gnp-card-insert">${cardHtml}</div><div class="gnp-box-front"></div><div class="gnp-box-lid"><div class="gnp-lid-top"></div><div class="gnp-lid-bow"></div></div><div class="gnp-sparkles"><div class="gnp-sparkle s1">✨</div><div class="gnp-sparkle s2">✨</div><div class="gnp-sparkle s3">✨</div></div><div class="gnp-interactive-hint">Tap to open</div></div>`;
+        return `<div class="gnp-live-card-container" style="margin:0 auto;width:100%;max-width:450px;"><div class="gnp-interactive-wrapper gnp-3d-box-wrapper" tabindex="0"><div class="gnp-box-back"></div><div class="gnp-card-insert">${cardHtml}</div><div class="gnp-box-front"></div><div class="gnp-box-lid"><div class="gnp-lid-top"></div><div class="gnp-lid-bow"></div></div><div class="gnp-sparkles"><div class="gnp-sparkle s1">✨</div><div class="gnp-sparkle s2">✨</div><div class="gnp-sparkle s3">✨</div></div><div class="gnp-interactive-hint">Tap to open</div></div></div>`;
       } else {
         return `<div class="gnp-interactive-wrapper gnp-ribbon-wrapper" tabindex="0"><div class="gnp-card-insert">${cardHtml}</div><div class="gnp-ribbon-left"></div><div class="gnp-ribbon-right"></div><div class="gnp-ribbon-center"><div class="gnp-bow"><div class="gnp-bow-tail left"></div><div class="gnp-bow-tail right"></div><div class="gnp-bow-heart"></div></div></div><div class="gnp-interactive-hint">Tap to untie</div></div>`;
       }

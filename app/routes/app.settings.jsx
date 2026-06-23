@@ -82,11 +82,7 @@ export default function Settings() {
 
   const handleToggleCard = (cardId) => {
     setFormState(prev => {
-      const isActive = prev.activeCards.includes(cardId);
-      let newActive = isActive ? prev.activeCards.filter(id => id !== cardId) : [...prev.activeCards, cardId];
-      let newOrder = prev.cardOrder;
-      if (!isActive && !newOrder.includes(cardId)) newOrder = [...newOrder, cardId];
-      return { ...prev, activeCards: newActive, cardOrder: newOrder };
+      return { ...prev, activeCards: [cardId], cardOrder: [cardId] };
     });
   };
 
@@ -131,7 +127,7 @@ export default function Settings() {
             </div>
           </div>
           <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" strokeWidth="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+            <svg onClick={() => window.shopify && window.shopify.toast.show('No new notifications')} style={{ cursor: "pointer" }} width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" strokeWidth="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
             <div style={{ width: "32px", height: "32px", borderRadius: "50%", background: "#38bdf8", border: "2px solid #1e293b", display: "flex", justifyContent: "center", alignItems: "center", fontSize: "14px", fontWeight: "bold" }}>{shop.charAt(0).toUpperCase()}</div>
           </div>
         </div>
@@ -185,8 +181,8 @@ export default function Settings() {
                   </div>
                   {unlocked ? (
                     <label style={{ display: "flex", alignItems: "center", cursor: "pointer", fontSize: "13px", color: active ? "#38bdf8" : "#94a3b8" }}>
-                      <input type="checkbox" checked={active} onChange={() => handleToggleCard(design.id)} style={{ marginRight: "8px", accentColor: "#38bdf8" }} />
-                      {active ? "Enabled" : "Disabled"}
+                      <input type="radio" checked={active} onChange={() => handleToggleCard(design.id)} style={{ marginRight: "8px", accentColor: "#38bdf8" }} />
+                      {active ? "Active" : "Set Active"}
                     </label>
                   ) : (
                     <Link to="/app/pricing" style={{ fontSize: "12px", color: "#f97316", background: "transparent", border: "none", cursor: "pointer", textDecoration: "underline", display: "inline-block" }}>Upgrade to unlock</Link>

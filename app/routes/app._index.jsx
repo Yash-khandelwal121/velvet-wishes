@@ -60,12 +60,8 @@ export const action = async ({ request }) => {
   let cardOrder = JSON.parse(settings.cardOrder || '["design_1"]');
 
   if (actionType === "enable") {
-    if (!activeCards.includes(cardId)) {
-      activeCards.push(cardId);
-    }
-    if (!cardOrder.includes(cardId)) {
-      cardOrder.push(cardId);
-    }
+    activeCards = [cardId];
+    cardOrder = [cardId];
   } else if (actionType === "disable") {
     activeCards = activeCards.filter(id => id !== cardId);
     if (activeCards.length === 0) {
@@ -225,8 +221,9 @@ export default function Index() {
                       Open Editor
                     </Link>
                     
-                    {unlocked && (
-                      active ? (
+                    {unlocked && (() => {
+                      const isThisCardUpdating = isUpdating && navigation.formData?.get("cardId") === design.id;
+                      return active ? (
                         <button 
                           onClick={() => handleToggleActive(design.id, "disable")}
                           disabled={isUpdating}
@@ -242,7 +239,7 @@ export default function Index() {
                             opacity: isUpdating ? 0.7 : 1
                           }}
                         >
-                          {isUpdating ? "..." : "✓ Active"}
+                          {isThisCardUpdating ? "..." : "✓ Active"}
                         </button>
                       ) : (
                         <button 
@@ -260,10 +257,10 @@ export default function Index() {
                             opacity: isUpdating ? 0.7 : 1
                           }}
                         >
-                          {isUpdating ? "..." : "Apply"}
+                          {isThisCardUpdating ? "..." : "Apply"}
                         </button>
-                      )
-                    )}
+                      );
+                    })()}
                   </div>
                 </div>
               </div>

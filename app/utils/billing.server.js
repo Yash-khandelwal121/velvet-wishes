@@ -11,6 +11,20 @@ export async function syncSubscription(request, shop) {
   const { billing } = await authenticate.admin(request);
 
   try {
+    const url = new URL(request.url);
+    const hasChargeId = url.searchParams.has("charge_id");
+    
+    // Cache check: Avoid calling Shopify Billing API on every page load
+    if (!hasChargeId) {
+      const existing = await prisma.subscription.findUnique({ where: { shop } });
+      if (existing && existing.updatedAt) {
+        // If checked within the last 1 hour, use the cached value
+        const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000);
+        if (existing.updatedAt > oneHourAgo) {
+          return existing;
+        }
+      }
+    }
     // Check active payment with Shopify Billing API
     const check = await billing.check({
       plans: [MONTHLY_PLAN_50, MONTHLY_PLAN_70, MONTHLY_PLAN_100],
@@ -35,10 +49,9 @@ export async function syncSubscription(request, shop) {
       }
     }
 
-    // Sync to database
     const subscription = await prisma.subscription.upsert({
       where: { shop },
-      update: { plan: activePlan, status, billingId },
+      update: { plan: activePlan, status, billingId, updatedAt: new Date() },
       create: { shop, plan: activePlan, status, billingId },
     });
 
