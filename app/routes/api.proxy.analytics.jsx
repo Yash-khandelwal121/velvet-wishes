@@ -12,9 +12,16 @@ export async function action({ request }) {
     "Content-Type": "application/json",
   };
 
+  const url = new URL(request.url);
+  let shop = url.searchParams.get("shop");
+
   try {
     const data = await request.json();
-    const { shop, action } = data; // action could be 'view', 'select', 'submit'
+    const { action } = data; // action could be 'view', 'select', 'submit'
+
+    if (!shop) {
+      shop = data.shop;
+    }
 
     if (!shop || !action) {
       return Response.json({ error: "Missing required fields" }, { status: 400, headers });
