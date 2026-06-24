@@ -1,4 +1,4 @@
-import { Links, Meta, Outlet, Scripts, ScrollRestoration } from "react-router";
+import { Links, Meta, Outlet, Scripts, ScrollRestoration, useRouteError } from "react-router";
 
 export default function App() {
   return (
@@ -17,6 +17,30 @@ export default function App() {
       <body>
         <Outlet />
         <ScrollRestoration />
+        <Scripts />
+      </body>
+    </html>
+  );
+}
+
+export function ErrorBoundary() {
+  const error = useRouteError();
+  console.error(error);
+  return (
+    <html>
+      <head>
+        <title>Oh no!</title>
+        <Meta />
+        <Links />
+      </head>
+      <body>
+        <div style={{ padding: "20px", fontFamily: "system-ui, sans-serif" }}>
+          <h1>App Error</h1>
+          <p>Something went wrong. Please refresh the page.</p>
+          <pre style={{ background: "#f1f1f1", padding: "10px", borderRadius: "5px", overflow: "auto" }}>
+            {error?.message || String(error)}
+          </pre>
+        </div>
         <Scripts />
       </body>
     </html>
