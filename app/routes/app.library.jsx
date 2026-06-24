@@ -32,6 +32,16 @@ export const loader = async ({ request }) => {
   return { plan: subscription?.plan || "FREE", activeCards, shop };
 };
 
+const ALL_DESIGNS = [
+  { id: "design_1", class: "gnp-theme-classic", name: "Classic Note", desc: "Simple, elegant and perfect for any occasion.", price: "Free", title: "CLASSIC NOTE" },
+  { id: "design_2", class: "gnp-theme-floral", name: "Floral Wishes", desc: "Beautiful floral design for heartfelt moments.", price: "$50", title: "FLORAL WISHES" },
+  { id: "design_3", class: "gnp-theme-blackgold", name: "Luxury Black Gold", desc: "Premium black & gold style for a luxury touch.", price: "$50", title: "LUXURY GIFT" },
+  { id: "design_4", class: "gnp-theme-celebration", name: "Celebration Card", desc: "Bright, joyful and perfect for celebrations.", price: "$70", title: "CELEBRATION" },
+  { id: "design_5", class: "gnp-theme-romantic", name: "Romantic Elegance", desc: "Elegant design for your loved ones.", price: "$70", title: "ROMANCE" },
+  { id: "design_6", class: "gnp-theme-royal", name: "Royal Luxury", desc: "Royal, elegant and truly premium experience.", price: "$100", title: "ROYAL GIFT NOTE" },
+  { id: "design_7", class: "gnp-theme-3d", name: "3D Magic Gift", desc: "3D animated gift box with magical vibes.", price: "$100", title: "MAGIC GIFT" }
+];
+
 export const action = async ({ request }) => {
   const { session, admin } = await authenticate.admin(request);
   const formData = await request.formData();
@@ -48,10 +58,27 @@ export const action = async ({ request }) => {
     });
   }
 
+  let subscription = await prisma.subscription.findUnique({
+    where: { shop: session.shop },
+  });
+  const currentPlan = subscription?.plan || "FREE";
+
   let activeCards = JSON.parse(settings.activeCards || '["design_1"]');
   let cardOrder = JSON.parse(settings.cardOrder || '["design_1"]');
 
   if (actionType === "enable") {
+    const design = ALL_DESIGNS.find(d => d.id === cardId);
+    let allowed = true;
+    if (design && design.price !== "Free") {
+      if (currentPlan === "FREE") allowed = false;
+      else if (currentPlan === "PREMIUM_A" && design.price !== "$50") allowed = false;
+      else if (currentPlan === "PREMIUM_B" && design.price === "$100") allowed = false;
+    }
+
+    if (!allowed) {
+      return { error: "Plan does not allow this template. Please upgrade." };
+    }
+
     if (!activeCards.includes(cardId)) {
       activeCards.push(cardId);
     }
@@ -59,42 +86,6 @@ export const action = async ({ request }) => {
       cardOrder.push(cardId);
     }
   } else if (actionType === "disable") {
-    activeCards = activeCards.filter(id => id !== cardId);
-    if (activeCards.length === 0) {
-      activeCards = ["design_1"];
-    }
-  }
-
-  const payload = {
-    fontColor: settings.fontColor,
-    textColor: settings.textColor,
-    buttonColor: settings.buttonColor,
-    accentColor: settings.accentColor,
-    cardTitle: settings.cardTitle,
-    maxCards: settings.maxCards,
-    activeCards: JSON.stringify(activeCards),
-    cardOrder: JSON.stringify(cardOrder),
-  };
-
-  await prisma.storeSettings.update({
-    where: { shop: session.shop },
-    data: payload,
-  });
-
-  await updateStoreMetafield(admin.graphql, payload);
-
-  return { success: true };
-};
-
-const ALL_DESIGNS = [
-  { id: "design_1", class: "gnp-theme-classic", name: "Classic Note", desc: "Simple, elegant and perfect for any occasion.", price: "Free", title: "CLASSIC NOTE" },
-  { id: "design_2", class: "gnp-theme-floral", name: "Floral Wishes", desc: "Beautiful floral design for heartfelt moments.", price: "$50", title: "FLORAL WISHES" },
-  { id: "design_3", class: "gnp-theme-blackgold", name: "Luxury Black Gold", desc: "Premium black & gold style for a luxury touch.", price: "$50", title: "LUXURY GIFT" },
-  { id: "design_4", class: "gnp-theme-celebration", name: "Celebration Card", desc: "Bright, joyful and perfect for celebrations.", price: "$70", title: "CELEBRATION" },
-  { id: "design_5", class: "gnp-theme-romantic", name: "Romantic Elegance", desc: "Elegant design for your loved ones.", price: "$70", title: "ROMANCE" },
-  { id: "design_6", class: "gnp-theme-royal", name: "Royal Luxury", desc: "Royal, elegant and truly premium experience.", price: "$100", title: "ROYAL GIFT NOTE" },
-  { id: "design_7", class: "gnp-theme-3d", name: "3D Magic Gift", desc: "3D animated gift box with magical vibes.", price: "$100", title: "MAGIC GIFT" }
-];
 
 export default function Library() {
   const { plan, activeCards, shop } = useLoaderData();
@@ -113,6 +104,14 @@ export default function Library() {
   const submit = useSubmit();
   const navigation = useNavigation();
   const isUpdating = navigation.state !== "idle";
+
+  const isAllowed = (price) => {
+    if (price === "Free") return true;
+    if (plan === "PREMIUM_C") return true;
+    if (plan === "PREMIUM_B" && (price === "$50" || price === "$70")) return true;
+    if (plan === "PREMIUM_A" && price === "$50") return true;
+    return false;
+  };
 
   const handleToggleActive = (cardId, actionType) => {
     submit({ cardId, actionType }, { method: "post" });
@@ -168,6 +167,7 @@ export default function Library() {
                       <div style={{ marginTop: "8px", display: "flex", justifyContent: "flex-end" }}>
                         {(() => {
                           const isThisCardUpdating = isUpdating && navigation.formData?.get("cardId") === d.id;
+                          const allowed = isAllowed(d.price);
                           return isActive ? (
                             <button 
                               disabled={isUpdating}
@@ -175,6 +175,14 @@ export default function Library() {
                               style={{ border: "none", fontSize: "10px", color: "#4ade80", background: "rgba(74, 222, 128, 0.1)", padding: "4px 8px", borderRadius: "4px", cursor: isUpdating ? "wait" : "pointer", opacity: isUpdating ? 0.7 : 1 }}
                             >
                               {isThisCardUpdating ? "..." : "✓ Active Storefront"}
+                            </button>
+                          ) : !allowed ? (
+                            <button 
+                              disabled={isUpdating}
+                              onClick={(e) => { e.stopPropagation(); navigate("/app/pricing"); }}
+                              style={{ border: "1px solid rgba(243, 183, 85, 0.5)", fontSize: "10px", color: "#f3b755", background: "rgba(243, 183, 85, 0.1)", padding: "4px 8px", borderRadius: "4px", cursor: "pointer", opacity: isUpdating ? 0.7 : 1 }}
+                            >
+                              ⭐ Upgrade to Enable
                             </button>
                           ) : (
                             <button 

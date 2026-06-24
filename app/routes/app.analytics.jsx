@@ -24,7 +24,6 @@ export const loader = async ({ request }) => {
 
 export default function Analytics() {
   const { analytics, subscription, shop } = useLoaderData();
-  const [isDemo, setIsDemo] = useState(true);
   const [activeTab, setActiveTab] = useState("overall"); // "overall" | "live" | "draft"
 
   // Base values adjusted by tab
@@ -135,44 +134,32 @@ export default function Analytics() {
 
   // Set metrics based on active mode and active tab
   const viewsVal = useMemo(() => {
-    const raw = isDemo ? 1280 : analytics.views;
+    const raw = analytics.views;
     return Math.round(raw * tabMultiplier);
-  }, [isDemo, analytics.views, tabMultiplier]);
+  }, [analytics.views, tabMultiplier]);
 
   const selectsVal = useMemo(() => {
-    const raw = isDemo ? 456 : analytics.selects;
+    const raw = analytics.selects;
     return Math.round(raw * tabMultiplier);
-  }, [isDemo, analytics.selects, tabMultiplier]);
+  }, [analytics.selects, tabMultiplier]);
 
   const submitsVal = useMemo(() => {
-    const raw = isDemo ? 186 : analytics.submits;
+    const raw = analytics.submits;
     return Math.round(raw * tabMultiplier);
-  }, [isDemo, analytics.submits, tabMultiplier]);
+  }, [analytics.submits, tabMultiplier]);
 
   // Timeline values
   const viewsTimeline = useMemo(() => {
-    if (isDemo) {
-      const base = [150, 192, 148, 220, 175, 230, 165]; // sum 1280
-      return base.map(v => Math.round(v * tabMultiplier));
-    }
     return generateTimeline(viewsVal);
-  }, [isDemo, viewsVal, tabMultiplier]);
+  }, [viewsVal]);
 
   const selectsTimeline = useMemo(() => {
-    if (isDemo) {
-      const base = [50, 68, 52, 78, 62, 82, 64]; // sum 456
-      return base.map(v => Math.round(v * tabMultiplier));
-    }
     return distributeProportionately(selectsVal, viewsTimeline);
-  }, [isDemo, selectsVal, viewsTimeline, tabMultiplier]);
+  }, [selectsVal, viewsTimeline]);
 
   const submitsTimeline = useMemo(() => {
-    if (isDemo) {
-      const base = [20, 28, 21, 32, 25, 34, 26]; // sum 186
-      return base.map(v => Math.round(v * tabMultiplier));
-    }
     return distributeProportionately(submitsVal, selectsTimeline);
-  }, [isDemo, submitsVal, selectsTimeline, tabMultiplier]);
+  }, [submitsVal, selectsTimeline]);
 
   const conversionRate = viewsVal > 0 
     ? ((submitsVal / viewsVal) * 100).toFixed(2) 
@@ -286,48 +273,6 @@ export default function Analytics() {
             </div>
           </div>
           <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
-            {/* Demo / Live Toggle */}
-            <div style={{
-              display: "flex",
-              background: "#1e293b",
-              borderRadius: "20px",
-              padding: "2px",
-              border: "1px solid rgba(255,255,255,0.1)",
-            }}>
-              <button 
-                onClick={() => setIsDemo(true)}
-                style={{
-                  background: isDemo ? "#f97316" : "transparent",
-                  color: isDemo ? "#ffffff" : "#94a3b8",
-                  border: "none",
-                  padding: "6px 14px",
-                  borderRadius: "16px",
-                  fontSize: "12px",
-                  fontWeight: "600",
-                  cursor: "pointer",
-                  transition: "all 0.2s ease"
-                }}
-              >
-                Demo Data
-              </button>
-              <button 
-                onClick={() => setIsDemo(false)}
-                style={{
-                  background: !isDemo ? "#f97316" : "transparent",
-                  color: !isDemo ? "#ffffff" : "#94a3b8",
-                  border: "none",
-                  padding: "6px 14px",
-                  borderRadius: "16px",
-                  fontSize: "12px",
-                  fontWeight: "600",
-                  cursor: "pointer",
-                  transition: "all 0.2s ease"
-                }}
-              >
-                Live Data
-              </button>
-            </div>
-
             <svg onClick={() => window.shopify && window.shopify.toast.show('No new notifications')} style={{ cursor: "pointer" }} width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" strokeWidth="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
             <div style={{ width: "32px", height: "32px", borderRadius: "50%", background: "#38bdf8", border: "2px solid #1e293b", display: "flex", justifyContent: "center", alignItems: "center", fontSize: "14px", fontWeight: "bold" }}>
               {shop.charAt(0).toUpperCase()}
@@ -338,7 +283,7 @@ export default function Analytics() {
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "24px" }}>
           <h2 style={{ fontSize: "20px", fontWeight: "600", margin: 0 }}>Quick Insights</h2>
           <div style={{ color: "#38bdf8", fontSize: "12px" }}>
-            {isDemo ? "Last 7 days vs. previous 7 days ↗" : "Live Store Feed ↗"}
+            Live Store Feed ↗
           </div>
         </div>
 
@@ -351,7 +296,7 @@ export default function Analytics() {
               <div style={{ width: "6px", height: "6px", borderRadius: "50%", background: "#38bdf8" }}></div> Estimated Views
             </div>
             <div style={{ fontSize: "32px", fontWeight: "600", marginBottom: "8px" }}>{viewsVal}</div>
-            <div style={{ fontSize: "12px", color: "#38bdf8" }}>{isDemo ? "+12.5% (+100.00%)" : "Real-time updates"}</div>
+            <div style={{ fontSize: "12px", color: "#38bdf8" }}>Real-time updates</div>
             <div style={{ height: "60px", marginTop: "24px" }}>
               <svg width="100%" height="100%" viewBox="0 0 200 60" preserveAspectRatio="none">
                 <defs>
@@ -373,10 +318,10 @@ export default function Analytics() {
               <div style={{ width: "6px", height: "6px", borderRadius: "50%", background: "#f97316" }}></div> Avg. Selects/Day
             </div>
             <div style={{ fontSize: "32px", fontWeight: "600", marginBottom: "8px" }}>
-              {isDemo ? (65.1 * tabMultiplier).toFixed(1) : (selectsVal / 7).toFixed(1)}
+              {(selectsVal / 7).toFixed(1)}
             </div>
-            <div style={{ fontSize: "12px", color: isDemo ? "#ef4444" : "#f97316" }}>
-              {isDemo ? "-5.55 (-7.03%)" : "Active selections tracking"}
+            <div style={{ fontSize: "12px", color: "#f97316" }}>
+              Active selections tracking
             </div>
             <div style={{ height: "60px", marginTop: "24px" }}>
               <svg width="100%" height="100%" viewBox="0 0 200 60" preserveAspectRatio="none">
@@ -399,7 +344,7 @@ export default function Analytics() {
               <div style={{ width: "6px", height: "6px", borderRadius: "50%", background: "#a855f7" }}></div> Note Submits
             </div>
             <div style={{ fontSize: "32px", fontWeight: "600", marginBottom: "8px" }}>{submitsVal}</div>
-            <div style={{ fontSize: "12px", color: "#a855f7" }}>{isDemo ? "+9,056 (+487.12%)" : "Saved note checkouts"}</div>
+            <div style={{ fontSize: "12px", color: "#a855f7" }}>Saved note checkouts</div>
             <div style={{ height: "60px", marginTop: "24px" }}>
               <svg width="100%" height="100%" viewBox="0 0 200 60" preserveAspectRatio="none">
                 <defs>
@@ -423,7 +368,7 @@ export default function Analytics() {
           {/* Main Line Chart */}
           <div style={{ background: "#1e293b", borderRadius: "16px", padding: "32px", display: "flex", flexDirection: "column", position: "relative" }}>
             {/* Premium Zero Traffic Overlay */}
-            {!isDemo && viewsVal === 0 && (
+            {viewsVal === 0 && (
               <div style={{
                 position: "absolute",
                 top: 0,
@@ -511,7 +456,7 @@ export default function Analytics() {
           {/* Bar Chart */}
           <div style={{ background: "#1e293b", borderRadius: "16px", padding: "32px", display: "flex", flexDirection: "column", position: "relative" }}>
             {/* Premium Zero Traffic Overlay */}
-            {!isDemo && viewsVal === 0 && (
+            {viewsVal === 0 && (
               <div style={{
                 position: "absolute",
                 top: 0,
