@@ -411,8 +411,11 @@
   margin: 0 auto;
   cursor: pointer;
   perspective: 1000px !important;
+  -webkit-perspective: 1000px !important;
   transform-style: preserve-3d !important;
+  -webkit-transform-style: preserve-3d !important;
   transition: transform 0.3s ease;
+  -webkit-transition: -webkit-transform 0.3s ease;
 }
 .gnp-interactive-wrapper::before {
   content: "";
