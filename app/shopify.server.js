@@ -7,6 +7,7 @@ import {
 import { billingConfig } from "./billing";
 import { PrismaSessionStorage } from "@shopify/shopify-app-session-storage-prisma";
 import prisma from "./db.server";
+import { updateStoreMetafield } from "./utils/metafields.server";
 
 const shopify = shopifyApp({
   apiKey: process.env.SHOPIFY_API_KEY,
@@ -24,6 +25,34 @@ const shopify = shopifyApp({
   ...(process.env.SHOP_CUSTOM_DOMAIN
     ? { customShopDomains: [process.env.SHOP_CUSTOM_DOMAIN] }
     : {}),
+  hooks: {
+    afterAuth: async ({ session, admin }) => {
+      shopify.registerWebhooks({ session });
+      const shop = session.shop;
+      let settings = await prisma.storeSettings.findUnique({ where: { shop } });
+      if (!settings) {
+        settings = await prisma.storeSettings.create({ data: { shop } });
+      }
+      
+      const payload = {
+        fontColor: settings.fontColor,
+        textColor: settings.textColor,
+        buttonColor: settings.buttonColor,
+        accentColor: settings.accentColor,
+        cardTitle: settings.cardTitle,
+        maxCards: settings.maxCards,
+        activeCards: settings.activeCards || '["design_1"]',
+        cardOrder: settings.cardOrder || '["design_1"]',
+      };
+      
+      try {
+        await updateStoreMetafield(admin.graphql, payload);
+        console.log(`Successfully synced default metafield on install for ${shop}`);
+      } catch (e) {
+        console.error(`Failed to sync metafield on auth for ${shop}`, e);
+      }
+    },
+  },
 });
 
 export default shopify;

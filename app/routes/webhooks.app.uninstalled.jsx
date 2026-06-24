@@ -12,5 +12,21 @@ export const action = async ({ request }) => {
     await db.session.deleteMany({ where: { shop } });
   }
 
+  // Downgrade the subscription to FREE and clear ACTIVE_DEV status so a reinstall starts fresh
+  await db.subscription.upsert({
+    where: { shop },
+    update: { plan: "FREE", status: "ACTIVE", billingId: null },
+    create: { shop, plan: "FREE", status: "ACTIVE" },
+  });
+
+  // Reset store settings so premium cards are deactivated
+  await db.storeSettings.updateMany({
+    where: { shop },
+    data: {
+      activeCards: '["design_1"]',
+      cardOrder: '["design_1"]'
+    }
+  });
+
   return new Response();
 };
