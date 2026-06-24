@@ -184,13 +184,12 @@
 .gnp-live-card-container {
   width: 100%;
   max-width: 450px;
-  aspect-ratio: 450 / 280;
 }
-@supports not (aspect-ratio: 450 / 280) {
-  .gnp-live-card-container {
-    height: 0;
-    padding-bottom: 62.22%;
-  }
+.gnp-live-card-container::before {
+  content: "";
+  display: block;
+  width: 100%;
+  padding-bottom: 62.22%;
 }
 
 .gnp-live-card {
@@ -409,18 +408,17 @@
   position: relative;
   width: 100%;
   max-width: 450px;
-  aspect-ratio: 450 / 280;
   margin: 0 auto;
   cursor: pointer;
   perspective: 1000px !important;
   transform-style: preserve-3d !important;
   transition: transform 0.3s ease;
 }
-@supports not (aspect-ratio: 450 / 280) {
-  .gnp-interactive-wrapper {
-    height: 0;
-    padding-bottom: 62.22%;
-  }
+.gnp-interactive-wrapper::before {
+  content: "";
+  display: block;
+  width: 100%;
+  padding-bottom: 62.22%;
 }
 
 .gnp-interactive-wrapper:hover {
@@ -469,7 +467,7 @@
   display: flex;
   align-items: center;
   border: 1px solid #ff477e;
-  transform: translateZ(10px); /* Fix Safari stacking */
+  transform: translateZ(0px); /* Fix Safari stacking */
 }
 .gnp-ribbon-left { left: 0; border-right: 2px solid #ff477e; justify-content: flex-end; transform-origin: left; }
 .gnp-ribbon-right { right: 0; border-left: 2px solid #ff477e; justify-content: flex-start; transform-origin: right; }
@@ -477,7 +475,7 @@
 .gnp-ribbon-center {
   position: absolute;
   top: 50%; left: 50%;
-  transform: translate(-50%, -50%) translateZ(20px);
+  transform: translate(-50%, -50%) translateZ(0px);
   width: 80px; height: 80px;
   z-index: 4;
   transition: all 0.6s ease;
@@ -536,16 +534,16 @@
 .gnp-ribbon-wrapper.is-open .gnp-ribbon-center,
 .gnp-ribbon-wrapper:hover .gnp-ribbon-center {
   opacity: 0;
-  transform: translate(-50%, -50%) scale(2) translateZ(20px);
+  transform: translate(-50%, -50%) scale(2) translateZ(0px);
   pointer-events: none;
 }
 .gnp-ribbon-wrapper.is-open .gnp-ribbon-left,
-.gnp-ribbon-wrapper:hover .gnp-ribbon-left { transform: rotateY(-90deg) translateZ(10px); opacity: 0; }
+.gnp-ribbon-wrapper:hover .gnp-ribbon-left { transform: rotateY(-90deg) translateZ(0px); opacity: 0; }
 .gnp-ribbon-wrapper.is-open .gnp-ribbon-right,
-.gnp-ribbon-wrapper:hover .gnp-ribbon-right { transform: rotateY(90deg) translateZ(10px); opacity: 0; }
+.gnp-ribbon-wrapper:hover .gnp-ribbon-right { transform: rotateY(90deg) translateZ(0px); opacity: 0; }
 .gnp-ribbon-wrapper.is-open .gnp-card-insert,
 .gnp-ribbon-wrapper:hover .gnp-card-insert {
-  transform: scale(1) translateZ(5px);
+  transform: scale(1) translateZ(0px);
   box-shadow: 0 10px 30px rgba(0,0,0,0.15);
   z-index: 5;
 }
@@ -559,7 +557,7 @@
   border-radius: 12px;
   z-index: 1;
   box-shadow: inset 0 0 20px rgba(0,0,0,0.1);
-  transform: translateZ(-10px);
+  transform: translateZ(0px);
 }
 .gnp-envelope-wrapper .gnp-card-insert {
   transform: translateY(10px) scale(0.9) translateZ(0px);
@@ -572,7 +570,7 @@
   z-index: 5;
   clip-path: polygon(0 0, 50% 30%, 100% 0, 100% 100%, 0 100%);
   box-shadow: 0 -5px 15px rgba(0,0,0,0.1);
-  transform: translateZ(20px);
+  transform: translateZ(0px);
 }
 .gnp-envelope-wrapper .gnp-envelope-flap {
   position: absolute; top: 0; left: 0; width: 100%; height: 60%;
@@ -583,13 +581,13 @@
   transform-origin: top;
   transition: all 0.6s ease;
   box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-  transform: translateZ(10px);
+  transform: translateZ(0px);
 }
 
 /* Envelope Open State */
 .gnp-envelope-wrapper.is-open .gnp-envelope-flap,
 .gnp-envelope-wrapper:hover .gnp-envelope-flap {
-  transform: rotateX(180deg) translateZ(10px);
+  transform: rotateX(180deg) translateZ(0px);
   z-index: 1;
   backface-visibility: hidden !important;
 }
@@ -608,18 +606,23 @@
   border-radius: 8px;
   z-index: 1;
   box-shadow: inset 0 0 40px rgba(0,0,0,0.8);
-  transform: translateZ(-20px);
+  transform: translateZ(0px);
 }
 .gnp-3d-box-wrapper .gnp-card-insert {
   width: 80%;
   left: 10%;
   height: auto;
-  aspect-ratio: 450 / 280;
   bottom: 0;
   top: auto;
   transform: translateY(20px) scale(0.8) translateZ(0px);
   opacity: 0;
   z-index: 2;
+}
+.gnp-3d-box-wrapper .gnp-card-insert::before {
+  content: "";
+  display: block;
+  width: 100%;
+  padding-bottom: 62.22%;
 }
 .gnp-3d-box-wrapper .gnp-box-front {
   position: absolute; bottom: 0; left: 10%; width: 80%; height: 40%;
@@ -628,7 +631,7 @@
   z-index: 3;
   box-shadow: 0 -5px 20px rgba(0,0,0,0.5);
   border-top: 2px solid #5a2e8e;
-  transform: translateZ(20px);
+  transform: translateZ(0px);
 }
 .gnp-3d-box-wrapper .gnp-box-lid {
   position: absolute; bottom: 35%; left: 8%; width: 84%; height: 30%;
@@ -641,7 +644,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  transform: translateZ(30px);
+  transform: translateZ(0px);
 }
 .gnp-3d-box-wrapper .gnp-lid-top {
   position: absolute; top: -20px; left: 50%; transform: translateX(-50%);
@@ -653,7 +656,7 @@
   position: absolute; top: 0; left: 0; width: 100%; height: 100%;
   pointer-events: none;
   z-index: 5;
-  transform: translateZ(40px);
+  transform: translateZ(0px);
 }
 .gnp-sparkle {
   position: absolute; font-size: 24px; opacity: 0; transition: all 1s ease;
@@ -665,18 +668,18 @@
 /* 3D Box Open State */
 .gnp-3d-box-wrapper.is-open .gnp-box-lid,
 .gnp-3d-box-wrapper:hover .gnp-box-lid {
-  transform: translateY(-150px) rotate(-10deg) scale(1.1) translateZ(30px);
+  transform: translateY(-150px) rotate(-10deg) scale(1.1) translateZ(0px);
   opacity: 0;
 }
 .gnp-3d-box-wrapper.is-open .gnp-card-insert,
 .gnp-3d-box-wrapper:hover .gnp-card-insert {
-  transform: translateY(-40px) scale(1) translateZ(10px);
+  transform: translateY(-40px) scale(1) translateZ(0px);
   opacity: 1;
   z-index: 4;
 }
 .gnp-3d-box-wrapper.is-open .gnp-sparkle.s1,
-.gnp-3d-box-wrapper:hover .gnp-sparkle.s1 { transform: translate(-50px, -100px) scale(1.5) rotate(45deg) translateZ(40px); opacity: 1; transition-delay: 0.1s;}
+.gnp-3d-box-wrapper:hover .gnp-sparkle.s1 { transform: translate(-50px, -100px) scale(1.5) rotate(45deg) translateZ(0px); opacity: 1; transition-delay: 0.1s;}
 .gnp-3d-box-wrapper.is-open .gnp-sparkle.s2,
-.gnp-3d-box-wrapper:hover .gnp-sparkle.s2 { transform: translate(0, -120px) scale(2) rotate(90deg) translateZ(40px); opacity: 1; transition-delay: 0.2s;}
+.gnp-3d-box-wrapper:hover .gnp-sparkle.s2 { transform: translate(0, -120px) scale(2) rotate(90deg) translateZ(0px); opacity: 1; transition-delay: 0.2s;}
 .gnp-3d-box-wrapper.is-open .gnp-sparkle.s3,
-.gnp-3d-box-wrapper:hover .gnp-sparkle.s3 { transform: translate(50px, -90px) scale(1.5) rotate(135deg) translateZ(40px); opacity: 1; transition-delay: 0.3s;}
+.gnp-3d-box-wrapper:hover .gnp-sparkle.s3 { transform: translate(50px, -90px) scale(1.5) rotate(135deg) translateZ(0px); opacity: 1; transition-delay: 0.3s;}
