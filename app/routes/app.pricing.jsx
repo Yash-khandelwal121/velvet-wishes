@@ -17,7 +17,7 @@ export const action = async ({ request }) => {
   const plan = formData.get("plan");
 
   const cleanShop = session.shop.replace(".myshopify.com", "");
-  const returnUrl = `https://admin.shopify.com/store/${cleanShop}/apps/${process.env.SHOPIFY_API_KEY}/app/pricing`;
+  const returnUrl = `https://admin.shopify.com/store/${cleanShop}/apps/${process.env.SHOPIFY_API_KEY}/app?planApproved=true`;
 
   let planName = "";
   if (plan === "PREMIUM_A") planName = MONTHLY_PLAN_50;

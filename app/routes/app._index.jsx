@@ -1,8 +1,8 @@
-import { useLoaderData, useNavigate, useSubmit, Link, useNavigation } from "react-router";
+import { useLoaderData, useNavigate, useSubmit, Link, useNavigation, useSearchParams } from "react-router";
 import { boundary } from "@shopify/shopify-app-react-router/server";
 import { authenticate } from "../shopify.server";
 import prisma from "../db.server";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { syncSubscription } from "../utils/billing.server";
 import { updateStoreMetafield } from "../utils/metafields.server";
 import previewStyles from "../styles/giftnote-preview.css?url";
@@ -109,7 +109,18 @@ export default function Index() {
   const navigate = useNavigate();
   const submit = useSubmit();
   const navigation = useNavigation();
+  const [searchParams, setSearchParams] = useSearchParams();
   const isUpdating = navigation.state !== "idle";
+
+  useEffect(() => {
+    if (searchParams.get("planApproved") === "true") {
+      if (window.shopify && window.shopify.toast) {
+        window.shopify.toast.show("Congratulations your plan is approved 🎉");
+      }
+      searchParams.delete("planApproved");
+      setSearchParams(searchParams, { replace: true });
+    }
+  }, [searchParams, setSearchParams]);
 
   const isCardUnlocked = (tier) => {
     const plan = (subscription?.plan || "FREE").toUpperCase();
