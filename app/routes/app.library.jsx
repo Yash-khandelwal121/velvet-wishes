@@ -86,6 +86,32 @@ export const action = async ({ request }) => {
       cardOrder.push(cardId);
     }
   } else if (actionType === "disable") {
+    activeCards = activeCards.filter(id => id !== cardId);
+    if (activeCards.length === 0) {
+      activeCards = ["design_1"];
+    }
+  }
+
+  const payload = {
+    fontColor: settings.fontColor,
+    textColor: settings.textColor,
+    buttonColor: settings.buttonColor,
+    accentColor: settings.accentColor,
+    cardTitle: settings.cardTitle,
+    maxCards: settings.maxCards,
+    activeCards: JSON.stringify(activeCards),
+    cardOrder: JSON.stringify(cardOrder),
+  };
+
+  await prisma.storeSettings.update({
+    where: { shop: session.shop },
+    data: payload,
+  });
+
+  await updateStoreMetafield(admin.graphql, payload);
+
+  return { success: true };
+};
 
 export default function Library() {
   const { plan, activeCards, shop } = useLoaderData();
