@@ -194,21 +194,21 @@ export default function Library() {
                         {(() => {
                           const isThisCardUpdating = isUpdating && navigation.formData?.get("cardId") === d.id;
                           const allowed = isAllowed(d.price);
-                          return isActive ? (
-                            <button 
-                              disabled={isUpdating}
-                              onClick={(e) => { e.stopPropagation(); handleToggleActive(d.id, "disable"); }}
-                              style={{ border: "none", fontSize: "10px", color: "#4ade80", background: "rgba(74, 222, 128, 0.1)", padding: "4px 8px", borderRadius: "4px", cursor: isUpdating ? "wait" : "pointer", opacity: isUpdating ? 0.7 : 1 }}
-                            >
-                              {isThisCardUpdating ? "..." : "✓ Active Storefront"}
-                            </button>
-                          ) : !allowed ? (
+                          return !allowed ? (
                             <button 
                               disabled={isUpdating}
                               onClick={(e) => { e.stopPropagation(); navigate("/app/pricing"); }}
                               style={{ border: "1px solid rgba(243, 183, 85, 0.5)", fontSize: "10px", color: "#f3b755", background: "rgba(243, 183, 85, 0.1)", padding: "4px 8px", borderRadius: "4px", cursor: "pointer", opacity: isUpdating ? 0.7 : 1 }}
                             >
                               ⭐ Upgrade to Enable
+                            </button>
+                          ) : isActive ? (
+                            <button 
+                              disabled={isUpdating}
+                              onClick={(e) => { e.stopPropagation(); handleToggleActive(d.id, "disable"); }}
+                              style={{ border: "none", fontSize: "10px", color: "#4ade80", background: "rgba(74, 222, 128, 0.1)", padding: "4px 8px", borderRadius: "4px", cursor: isUpdating ? "wait" : "pointer", opacity: isUpdating ? 0.7 : 1 }}
+                            >
+                              {isThisCardUpdating ? "..." : "✓ Active Storefront"}
                             </button>
                           ) : (
                             <button 
