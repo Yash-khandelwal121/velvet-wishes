@@ -1,7 +1,7 @@
 import { Links, Meta, Outlet, Scripts, ScrollRestoration, useRouteError } from "react-router";
 
 export const links = () => [
-  { rel: "icon", type: "image/svg+xml", href: "/favicon.svg" },
+  { rel: "icon", type: "image/png", href: "/logo.png" },
 ];
 export default function App() {
   return (
