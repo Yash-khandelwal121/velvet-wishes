@@ -152,7 +152,7 @@ export default function Library() {
           <div className="gnp-hf-header-left">
             <div className="gnp-hf-icon">🎁</div>
             <div>
-              <h2 className="gnp-hf-title">GiftNote Pro</h2>
+              <h2 className="gnp-hf-title">Velvet Wishes</h2>
               <p className="gnp-hf-subtitle">Add a personal touch to every gift.</p>
             </div>
           </div>
