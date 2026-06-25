@@ -1,5 +1,8 @@
 import { Links, Meta, Outlet, Scripts, ScrollRestoration, useRouteError } from "react-router";
 
+export const links = () => [
+  { rel: "icon", type: "image/svg+xml", href: "/favicon.svg" },
+];
 export default function App() {
   return (
     <html lang="en">
