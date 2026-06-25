@@ -230,7 +230,7 @@ export default function Pricing() {
             <div style={{ width: "32px", height: "32px", background: "rgba(255,255,255,0.05)", borderRadius: "8px", display: "flex", justifyContent: "center", alignItems: "center", marginBottom: "16px" }}>
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#a1a1aa" strokeWidth="2"><circle cx="12" cy="8" r="7"/><path d="M5.5 21v-2a3 3 0 0 1 3-3h7a3 3 0 0 1 3 3v2"/></svg>
             </div>
-            <h3 style={{ fontSize: "20px", margin: "0 0 8px 0", fontWeight: "500" }}>Plan A</h3>
+            <h3 style={{ fontSize: "20px", margin: "0 0 8px 0", fontWeight: "500" }}>Premium</h3>
             <p style={{ color: "#a1a1aa", fontSize: "13px", margin: "0 0 24px 0", lineHeight: "1.5", height: "40px" }}>Upgrade to premium designs with gold accents.</p>
             <div style={{ margin: "0 0 24px 0", display: "flex", alignItems: "baseline" }}>
               <span style={{ fontSize: "36px", fontWeight: "600", letterSpacing: "-1px" }}>$50</span>
@@ -240,7 +240,7 @@ export default function Pricing() {
             <p style={{ fontSize: "13px", fontWeight: "600", marginBottom: "12px" }}>Features:</p>
             <ul style={{ listStyle: "none", padding: 0, margin: "0 0 24px 0", flexGrow: 1 }}>
               {[
-                "2 Gift Card Designs (Plan A)",
+                "2 Gift Card Designs (Premium)",
                 "Full Customization Suite",
                 "Email Support"
               ].map((feature, i) => (
@@ -268,7 +268,7 @@ export default function Pricing() {
                 boxShadow: currentPlan === "PREMIUM_A" ? "none" : "0 4px 14px rgba(139, 92, 246, 0.4)" 
               }}
             >
-              {currentPlan === "PREMIUM_A" ? "Current Plan" : "Activate Plan A"}
+              {currentPlan === "PREMIUM_A" ? "Current Plan" : "Activate Premium Plan"}
             </button>
           </div>
 
@@ -279,7 +279,7 @@ export default function Pricing() {
             <div style={{ width: "32px", height: "32px", background: "#8b5cf6", borderRadius: "8px", display: "flex", justifyContent: "center", alignItems: "center", marginBottom: "16px", boxShadow: "0 4px 12px rgba(139, 92, 246, 0.4)" }}>
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
             </div>
-            <h3 style={{ fontSize: "20px", margin: "0 0 8px 0", fontWeight: "500" }}>Plan B</h3>
+            <h3 style={{ fontSize: "20px", margin: "0 0 8px 0", fontWeight: "500" }}>Elite</h3>
             <p style={{ color: "#a1a1aa", fontSize: "13px", margin: "0 0 24px 0", lineHeight: "1.5", height: "40px" }}>Ideal for interactive animated designs with hover reveals.</p>
             <div style={{ margin: "0 0 24px 0", display: "flex", alignItems: "baseline" }}>
               <span style={{ fontSize: "36px", fontWeight: "600", letterSpacing: "-1px" }}>$70</span>
@@ -289,7 +289,7 @@ export default function Pricing() {
             <p style={{ fontSize: "13px", fontWeight: "600", marginBottom: "12px" }}>Features:</p>
             <ul style={{ listStyle: "none", padding: 0, margin: "0 0 24px 0", flexGrow: 1 }}>
               {[
-                "4 Gift Card Designs (Plan B)",
+                "4 Gift Card Designs (Elite)",
                 "Interactive Customizations",
                 "Priority Support",
                 "Advanced Insights & Analytics"
@@ -318,7 +318,7 @@ export default function Pricing() {
                 boxShadow: currentPlan === "PREMIUM_B" ? "none" : "0 4px 14px rgba(139, 92, 246, 0.4)" 
               }}
             >
-              {currentPlan === "PREMIUM_B" ? "Current Plan" : "Activate Plan B"}
+              {currentPlan === "PREMIUM_B" ? "Current Plan" : "Activate Elite Plan"}
             </button>
           </div>
 
@@ -327,7 +327,7 @@ export default function Pricing() {
             <div style={{ width: "32px", height: "32px", background: "rgba(255,255,255,0.05)", borderRadius: "8px", display: "flex", justifyContent: "center", alignItems: "center", marginBottom: "16px" }}>
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#a1a1aa" strokeWidth="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
             </div>
-            <h3 style={{ fontSize: "20px", margin: "0 0 8px 0", fontWeight: "500" }}>Plan C</h3>
+            <h3 style={{ fontSize: "20px", margin: "0 0 8px 0", fontWeight: "500" }}>Royal</h3>
             <p style={{ color: "#a1a1aa", fontSize: "13px", margin: "0 0 24px 0", lineHeight: "1.5", height: "40px" }}>Unlocks ultra luxury styling with 3D perspective widgets.</p>
             <div style={{ margin: "0 0 24px 0", display: "flex", alignItems: "baseline" }}>
               <span style={{ fontSize: "36px", fontWeight: "600", letterSpacing: "-1px" }}>$100</span>
@@ -337,7 +337,7 @@ export default function Pricing() {
             <p style={{ fontSize: "13px", fontWeight: "600", marginBottom: "12px" }}>Features:</p>
             <ul style={{ listStyle: "none", padding: 0, margin: "0 0 24px 0", flexGrow: 1 }}>
               {[
-                "All 7 Gift Card Designs (Plan C)",
+                "All 7 Gift Card Designs (Royal)",
                 "3D Premium Tilt Effects",
                 "Priority 24/7 Support",
                 "Advanced Branding Controls"
@@ -366,7 +366,7 @@ export default function Pricing() {
                 boxShadow: currentPlan === "PREMIUM_C" ? "none" : "0 4px 14px rgba(139, 92, 246, 0.4)" 
               }}
             >
-              {currentPlan === "PREMIUM_C" ? "Current Plan" : "Activate Plan C"}
+              {currentPlan === "PREMIUM_C" ? "Current Plan" : "Activate Royal Plan"}
             </button>
           </div>
 
