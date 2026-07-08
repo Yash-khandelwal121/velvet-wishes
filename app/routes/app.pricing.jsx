@@ -31,7 +31,7 @@ export const action = async ({ request }) => {
         onFailure: async () => {
           await billing.request({
             plan: planName,
-            isTest: true,
+            isTest: false,
             returnUrl,
           });
         },

@@ -28,7 +28,7 @@ export async function syncSubscription(request, shop) {
     // Check active payment with Shopify Billing API
     const check = await billing.check({
       plans: [MONTHLY_PLAN_50, MONTHLY_PLAN_70, MONTHLY_PLAN_100],
-      isTest: true,
+      isTest: false,
     });
 
     let activePlan = "FREE";
