@@ -7,7 +7,7 @@ export const MONTHLY_PLAN_100 = "Premium Plan C ($100/month)";
 export const billingConfig = {
   [MONTHLY_PLAN_50]: {
     interval: BillingInterval.Every30Days,
-    trialDays: 0,
+    trialDays: 1,
     replacementBehavior: BillingReplacementBehavior.ApplyImmediately,
     lineItems: [
       {
@@ -19,7 +19,7 @@ export const billingConfig = {
   },
   [MONTHLY_PLAN_70]: {
     interval: BillingInterval.Every30Days,
-    trialDays: 0,
+    trialDays: 1,
     replacementBehavior: BillingReplacementBehavior.ApplyImmediately,
     lineItems: [
       {
@@ -31,7 +31,7 @@ export const billingConfig = {
   },
   [MONTHLY_PLAN_100]: {
     interval: BillingInterval.Every30Days,
-    trialDays: 0,
+    trialDays: 1,
     replacementBehavior: BillingReplacementBehavior.ApplyImmediately,
     lineItems: [
       {
