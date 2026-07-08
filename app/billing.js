@@ -1,4 +1,4 @@
-import { BillingInterval } from "@shopify/shopify-app-react-router/server";
+import { BillingInterval, BillingReplacementBehavior } from "@shopify/shopify-app-react-router/server";
 
 export const MONTHLY_PLAN_50 = "Premium Plan A ($50/month)";
 export const MONTHLY_PLAN_70 = "Premium Plan B ($70/month)";
@@ -8,6 +8,7 @@ export const billingConfig = {
   [MONTHLY_PLAN_50]: {
     interval: BillingInterval.Every30Days,
     trialDays: 0,
+    replacementBehavior: BillingReplacementBehavior.ApplyImmediately,
     lineItems: [
       {
         amount: 50,
@@ -19,6 +20,7 @@ export const billingConfig = {
   [MONTHLY_PLAN_70]: {
     interval: BillingInterval.Every30Days,
     trialDays: 0,
+    replacementBehavior: BillingReplacementBehavior.ApplyImmediately,
     lineItems: [
       {
         amount: 70,
@@ -30,6 +32,7 @@ export const billingConfig = {
   [MONTHLY_PLAN_100]: {
     interval: BillingInterval.Every30Days,
     trialDays: 0,
+    replacementBehavior: BillingReplacementBehavior.ApplyImmediately,
     lineItems: [
       {
         amount: 100,
